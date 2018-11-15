@@ -1,5 +1,5 @@
 <?php
-
+// Ophalen van de artikel namen
 function ophalenArtikelen() {
     $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
     $user = "root";
@@ -17,6 +17,7 @@ function ophalenArtikelen() {
     return $array;
 }
 
+// Ophalen van beschrijving van alle producten
 function ophalenBeschrijving() {
     $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
     $user = "root";
@@ -33,6 +34,7 @@ function ophalenBeschrijving() {
     return $array;
 }
 
+// Ophalen van prijzen van producten
 function ophalenPrijs() {
     $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
     $user = "root";
@@ -49,6 +51,7 @@ function ophalenPrijs() {
     return $array;
 }
 
+// Laten zien van alle Producten
 function artikelenSite() {
     $artikelArray = ophalenArtikelen();
     $beschrijvingArray = ophalenBeschrijving();
@@ -151,4 +154,46 @@ function zoeken($zoekopdracht) {
     else {
         print("Geen zoekresultaten gevonden!");
     }
+}
+
+
+// Catogorie selectie
+//function CAlgemeen($value='')
+//{
+//  select * from stockItems as SISG
+//  where stockItemID in (select stockItemID
+//                        From stockitemstockgroups
+//                        where stockGroupID = (select stockGroupID
+//                                              from stockgroups
+//                                              where stockGroupID = 1, 4, 5, 6,))
+//}
+
+function CKleren($value='')
+{
+  // code...
+}
+
+function CMokken($value='')
+{
+  // code...
+}
+
+function CUSB($value='')
+{
+  // code...
+}
+
+function CPantovels($value='')
+{
+  // code...
+}
+
+function CSpeelgoed($value='')
+{
+  // code...
+}
+
+function CVerpakingMateriaal($value='')
+{
+  // code...
 }

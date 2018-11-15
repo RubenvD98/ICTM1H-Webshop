@@ -1,22 +1,23 @@
+<?php session_start(); ?>
 <!doctype html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="../js/jqeury-3.3.1.slim.min.js"></script>
     <script src="../js/umd/popper.min.js"></script>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
     <script src="../js/bootstrap.min.js"></script>
     <?php include '../Functies/Functie.php'; ?>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand" href="../Home/Home.php">World Wide Imports</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
-                <ul class="navbar-nav m-auto">
+                <ul class="navbar-nav mt-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="../Home/Home.php">Home</a>
                     </li>
@@ -26,9 +27,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../Contact/Contact.php">Contact</a>
                     </li>
-
+                  </ul>
+                </div>
+                <div class="collapse navbar-collapse justify-content-end">
+                  <ul class="navbar-nav mtauto">
                     <li class="nav-item">
-                        <form class="form-inline my-2 my-lg-0">
+                        <form class="form-inline my-2 my-lg-0" action="Categories.php" method="get">
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." name="zoek">
                                 <div class="input-group-append">
@@ -50,7 +54,7 @@
             </div>
         </div>
     </nav>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <nav aria-label="breadcrumb">
@@ -63,7 +67,7 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-sm-3">
                 <div class="card bg-light mb-3">

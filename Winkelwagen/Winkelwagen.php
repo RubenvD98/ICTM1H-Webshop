@@ -18,8 +18,8 @@
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
                 <ul class="navbar-nav mt-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="../Home/Home.php">Home<span class="sr-only">(current)</span></a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Home/Home.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../Categories/Categories.php">Producten</a>
@@ -28,15 +28,15 @@
                         <a class="nav-link" href="../Contact/Contact.php">Contact</a>
                     </li>
                   </ul>
-                </div>
-                <div class="collapse navbar-collapse justify-content-end">
-                  <ul class="navbar-nav mt-auto">
+            </div>
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav mt-auto">
                     <li class="nav-item">
-                        <form class="form-inline my-2 my-lg-0" action="../Categories/Categories.php" method="get">
+                        <form class="form-inline my-2 my-lg-0" action="Categories.php" method="get">
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." name="zoek">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-secondary btn-number">
+                                    <button type="submit" class="btn btn-secondary btn-number">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </div>
@@ -46,8 +46,7 @@
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0">
                             <a class="btn btn-success btn-sm ml-3" href="../Winkelwagen/Winkelwagen.php">
-                                <i class="fa fa-shopping-cart"></i>Winkelwagen
-                                <span class="badge badge-light"></span>
+                                <i class="fa fa-shopping-cart"></i>Winkelwagen<span class="badge badge-light"></span><span class="sr-only">(current)</span>
                             </a>
                         </form>
                     </li>
@@ -55,19 +54,19 @@
             </div>
         </div>
     </nav>
-    <!-- Info -->
-
     <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item active"><a href="../HOme/Home.php">Home</a></li>
+                        <li class="breadcrumb-item"><a href="../Home/Home.php">Home</a></li>
+                        <li class="breadcrumb-item active"><a href="Winkelwagen.php">Producten</a></li>
                     </ol>
                 </nav>
             </div>
         </div>
     </div>
+
 
     <!-- Footer -->
     <footer class="text-light bg-dark">
@@ -117,7 +116,6 @@
                     <p class="float-left">
                         <a href="#">Back to top</a>
                     </p>
-                    <p class="text-right text-muted">created with <i class="fa fa-heart"></i> by <a href="https://t-php.fr/43-theme-ecommerce-bootstrap-4.html"><i>t-php</i></a> | <span>v. 1.0</span></p>
                 </div>
             </div>
         </div>

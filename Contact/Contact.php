@@ -1,22 +1,23 @@
+<?php session_start(); ?>
 <!doctype html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="../js/jqeury-3.3.1.slim.min.js"></script>
     <script src="../js/umd/popper.min.js"></script>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
     <script src="../js/bootstrap.min.js"></script>
     <?php include '../Functies/Functie.php'; ?>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand" href="../Home/Home.php">World Wide Imports</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
-                <ul class="navbar-nav m-auto">
+                <ul class="navbar-nav mt-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="../Home/Home.php">Home</a>
                     </li>
@@ -26,11 +27,14 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="../Contact/Contact.php">Contact<span class="sr-only">(current)</span></a>
                     </li>
-
+                  </ul>
+                </div>
+                <div class="collapse navbar-collapse justify-content-end">
+                  <ul class="navbar-nav mt-auto">
                     <li class="nav-item">
-                        <form class="form-inline my-2 my-lg-0">
+                        <form class="form-inline my-2 my-lg-0" action="../Categories/Categories.php" method="get">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
+                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." name="zoek">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-secondary btn-number">
                                         <i class="fa fa-search"></i>
@@ -50,13 +54,7 @@
             </div>
         </div>
     </nav>
-    <section class="jumbotron text-center">
-        <div class="container">
-            <h1 class="jumbotron-heading">E-COMMERCE CATEGORY</h1>
-            <p class="lead text-muted mb-0">Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte...</p>
-        </div>
-    </section>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <nav aria-label="breadcrumb">
@@ -68,6 +66,41 @@
             </div>
         </div>
     </div>
+    <section id="contact">
+  <div class="container">
+    <div class="well well-sm">
+      <h3><strong>Contact Us</strong></h3>
+    </div>
+
+	<div class="row">
+	  <div class="col-md-7">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3736489.7218514383!2d90.21589792292741!3d23.857125486636733!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1506502314230" width="100%" height="315" frameborder="0" style="border:0" allowfullscreen></iframe>
+      </div>
+
+      <div class="col-md-5">
+          <h4><strong>Get in Touch</strong></h4>
+        <form>
+          <div class="form-group">
+            <input type="text" class="form-control" name="" value="" placeholder="Name">
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control" name="" value="" placeholder="E-mail">
+          </div>
+          <div class="form-group">
+            <input type="tel" class="form-control" name="" value="" placeholder="Phone">
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" name="" rows="3" placeholder="Message"></textarea>
+          </div>
+          <button class="btn btn-default" type="submit" name="button">
+              <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<br><br><br><br><br><br><br><br>
 
 
     <!-- Footer -->

@@ -1,22 +1,23 @@
+<?php session_start(); ?>
 <!doctype html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="../js/jqeury-3.3.1.slim.min.js"></script>
     <script src="../js/umd/popper.min.js"></script>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
     <script src="../js/bootstrap.min.js"></script>
     <?php include '../Functies/Functie.php'; ?>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand" href="../Home/Home.php">World Wide Imports</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
-                <ul class="navbar-nav m-auto">
+                <ul class="navbar-nav mt-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="../Home/Home.php">Home</a>
                     </li>
@@ -26,9 +27,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../Contact/Contact.php">Contact</a>
                     </li>
-
+                  </ul>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav mt-auto">
                     <li class="nav-item">
-                        <form class="form-inline my-2 my-lg-0" action="Kleren.php" method="get">
+                        <form class="form-inline my-2 my-lg-0" action="Categories.php" method="get">
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." name="zoek">
                                 <div class="input-group-append">
@@ -50,7 +54,7 @@
             </div>
         </div>
     </nav>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <nav aria-label="breadcrumb">
@@ -63,19 +67,26 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-sm-3">
                 <div class="card bg-light mb-3">
                     <div class="card-header bg-primary text-white text-uppercase"><i class="fa fa-list"></i>Categories</div>
                     <ul class="list-group category_block">
                         <li class="list-group-item active"><a href="Algemeen.php" class="text-white">Algemeen</a></li>
+                        <!-- StockItemGroupID = 1 4 5 6 -->
                         <li class="list-group-item"><a href="kleren.php">Kleren</a></li>
+                        <!-- StockItemGroupID = 2 -->
                         <li class="list-group-item"><a href="Mokken.php">Mokken</a></li>
+                        <!-- StockItemGroupID = 3 -->
                         <li class="list-group-item"><a href="USB.php">USB Sticks</a></li>
+                        <!-- StockItemGroupID = 7 -->
                         <li class="list-group-item"><a href="pantovels.php">Pantovels</a></li>
+                        <!-- StockItemGroupID = 8 -->
                         <li class="list-group-item"><a href="Speelgoed.php">Speelgoed</a></li>
+                        <!-- StockItemGroupID = 9 -->
                         <li class="list-group-item"><a href="VerpakingMateriaal.php">Verpaking Materiaal</a></li>
+                        <!-- StockItemGroupID = 10 -->
                     </ul>
                 </div>
             </div>
@@ -92,8 +103,8 @@
 
     <!-- Footer -->
     <footer class="text-light bg-dark">
-        <div class="container">
-            <div class="row">
+        <div id="wrap" class="container">
+            <div id="main" class="row clear-top">
                 <div class="col-md-3 col-lg-4 col-xl-3">
                     <h5>About</h5>
                     <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
@@ -138,7 +149,6 @@
                     <p class="float-left">
                         <a href="#">Back to top</a>
                     </p>
-                    <p class="text-right text-muted">created with <i class="fa fa-heart"></i> by <a href="https://t-php.fr/43-theme-ecommerce-bootstrap-4.php"><i>t-php</i></a> | <span>v. 1.0</span></p>
                 </div>
             </div>
         </div>
