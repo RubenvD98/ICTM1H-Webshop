@@ -61,7 +61,7 @@ function artikelenSite() {
         ?>
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
-                <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
+                <img class="card-img-top" src="../IMG/chocolade.jpg" alt="Card image cap">
                 <div class="card-body">
                     <h4 class="card-title"><a href="product.html" title="View Product"><?php print($artikelnaam) ?></a></h4>
                     <?php
