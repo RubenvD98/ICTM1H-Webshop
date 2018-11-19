@@ -166,7 +166,7 @@ function zoeken($zoekopdracht) {
                                 }
                                 ?></a></h4>
                         <?php
-                        foreach ($filterBeschrijvingArray as $key => $beschrijving) {
+                        foreach ($beschrijvingArray as $key => $beschrijving) {
                             if ($id == $key) {
                                 ?>  <p class="card-text"><?php print($beschrijving); ?></p> <?php
                                     }
@@ -178,7 +178,7 @@ function zoeken($zoekopdracht) {
                                 foreach ($prijsArray as $key => $prijs) {
                                     if ($id == $key) {
                                         ?>
-                                        <p class="btn btn-danger btn-block"> <?php print($prijs); ?></p>
+                                        <p class="btn btn-danger btn-block"> <?php print("€" . $prijs); ?></p>
                                         <?php
                                     }
                                 }
