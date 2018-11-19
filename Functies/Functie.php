@@ -22,6 +22,23 @@ function WaardesOphalen() {
     return array($beschrijvingArray, $Array, $prijsArray);
 }
 
+ function login($uname, $psw)
+    {
+                $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
+                $user = "root";
+                $pass = "";
+                $pdo = new PDO($db, $user, $pass);
+            $query = $pdo->prepare("SELECT * FROM klanten");
+            $enc_psw = hash('sha256', $psw);
+            $query->execute();
+            $array = array();
+    while ($row = $query->fetch()) {
+        $gebruikersnaam = $row["gebruikersnaam"];
+        $wachtwoord = $row["gebruikersnaam"];
+    }
+    return $array;
+}
+
 function filterenNaam() {
     $woordLengte = 0;
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
