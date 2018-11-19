@@ -1,71 +1,112 @@
 <?php
 // Ophalen van de artikel namen
-function ophalenArtikelen() {
+function WaardesOphalen() {
     $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
     $user = "root";
     $pass = "";
     $pdo = new PDO($db, $user, $pass);
     $Querry = $pdo->prepare("SELECT * FROM stockitems");
     $Querry->execute();
-    $array = array();
+    $Array = array();
     $beschrijvingArray = array();
+    $prijsArray = array();
     while ($row = $Querry->fetch()) {
-        $artikel = $row["StockItemName"];
-        $id = $row["StockItemID"];
-        $array[$id] = $artikel;
-    }
-    return $array;
-}
-
-// Ophalen van beschrijving van alle producten
-function ophalenBeschrijving() {
-    $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
-    $user = "root";
-    $pass = "";
-    $pdo = new PDO($db, $user, $pass);
-    $Querry = $pdo->prepare("SELECT * FROM stockitems");
-    $Querry->execute();
-    $array = array();
-    while ($row = $Querry->fetch()) {
-        $id = $row["StockItemID"];
-        $beschrijving = $row["SearchDetails"];
-        $array[$id] = $beschrijving;
-    }
-    return $array;
-}
-
-// Ophalen van prijzen van producten
-function ophalenPrijs() {
-    $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
-    $user = "root";
-    $pass = "";
-    $pdo = new PDO($db, $user, $pass);
-    $Querry = $pdo->prepare("SELECT * FROM stockitems");
-    $Querry->execute();
-    $array = array();
-    while ($row = $Querry->fetch()) {
+        $Product = $row["StockItemName"];
         $id = $row["StockItemID"];
         $prijs = $row["RecommendedRetailPrice"];
-        $array[$id] = $prijs;
+        $beschrijving = $row["SearchDetails"];
+        $beschrijvingArray [$id] = $beschrijving;
+        $Array[$id] = $Product;
+        $prijsArray[$id] = $prijs;
     }
-    return $array;
+    return array($beschrijvingArray, $Array, $prijsArray);
 }
 
-// Laten zien van alle Producten
-function artikelenSite() {
-    $artikelArray = ophalenArtikelen();
-    $beschrijvingArray = ophalenBeschrijving();
-    $prijsArray = ophalenPrijs();
+function filterenNaam() {
+    $woordLengte = 0;
+    list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
+    $filterMaatArray = array();
+    $maten = array("3XS", "2XS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL");
+    foreach ($artikelArray as $id => $product) {
+        $woordLengte = strlen($product);
+        if (in_array(substr($product, $woordLengte - 3), $maten)) {
+            $product = substr($product, 0, -3);
+            if (in_array($product, $filterMaatArray) == false) {
+                $filterMaatArray[$id] = $product;
+            }
+        } else {
+            if (in_array(substr($product, $woordLengte - 2), $maten)) {
+                $product = substr($product, 0, -2);
+                if (in_array($product, $filterMaatArray) == false) {
+                    $filterMaatArray[$id] = $product;
+                }
+            } else {
+                if (in_array(substr($product, $woordLengte - 1), $maten)) {
+                    $product = substr($product, 0, -1);
+                    if (in_array($product, $filterMaatArray) == false) {
+                        $filterMaatArray[$id] = $product;
+                    }
+                } else {
+                    $filterMaatArray[$id] = $product;
+                }
+            }
+        }
+    }
+    $kleurArray = array("(White)", "(Black)", "(Green)", "(Gray)");
+    $filterArray = array();
+    foreach ($filterMaatArray as $id => $product) {
+        $product = str_replace($kleurArray, "", $product);
+        if (in_array($product, $filterArray) == false) {
+            $filterArray[$id] = $product;
+        }
+    }
+    return $filterArray;
+}
 
-    foreach ($artikelArray as $id => $artikelnaam) {
+function filterenBeschrijving() {
+    list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
+
+    $kleurArray = array("(White)", "(Black)", "(Green)", "(Gray)");
+    $maten = array("3XS", "2XS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL");
+    $beschrijvingLengte = 0;
+    $filterMaatArray = array();
+
+    foreach ($beschrijvingArray as $id => $beschrijving) {
+        $beschrijvingLengte = strlen($beschrijving);
+        foreach ($maten as $key => $maat) {
+            if(substr($beschrijving, ($beschrijvingLengte - 3)) == $maat){
+                $beschrijving = substr($beschrijving, 0, -3);
+                if(in_array($beschrijving, $filterMaatArray == FALSE)){
+                    $filterMaatArray[$id] = $beschrijving;
+                }
+            }
+        }
+    }
+        $filterArray = array();
+    
+        foreach ($filterMaatArray as $id => $beschrijving) {
+            $beschrijving = str_replace($kleurArray, "", $beschrijving);
+            if (in_array($beschrijving, $filterArray) == false) {
+                $filterArray[$id] = $beschrijving;
+            }
+        }
+    
+    return $filterMaatArray;
+}
+
+function artikelenSite() {
+    list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
+    $filterNaamArray = filterenNaam();
+    $filterBeschrijvingArray = filterenBeschrijving();
+    foreach ($filterNaamArray as $id => $product) {
         ?>
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
-                <img class="card-img-top" src="../IMG/chocolade.jpg" alt="Card image cap">
+                <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
                 <div class="card-body">
-                    <h4 class="card-title"><a href="product.html" title="View Product"><?php print($artikelnaam) ?></a></h4>
+                    <h4 class="card-title"><a href="product.html" title="View Product"><?php print($product) ?></a></h4>
                     <?php
-                    foreach ($beschrijvingArray as $key => $beschrijving) {
+                    foreach ($filterBeschrijvingArray as $key => $beschrijving) {
                         if ($id == $key) {
                             ?>  <p class="card-text"><?php print($beschrijving); ?></p> <?php
                             }
@@ -74,15 +115,17 @@ function artikelenSite() {
                     <div class="row">
                         <div class="col">
                             <?php
-                            foreach ($prijsArray as $key2 => $prijs) {
-                                if ($id == $key2) {
-                                    ?><p class="btn btn-danger btn-block">€ <?php print($prijs); ?></p><?php
+                            foreach ($prijsArray as $key => $prijs) {
+                                if ($id == $key) {
+                                    ?>
+                                    <p class="btn btn-danger btn-block"> <?php print($prijs); ?></p>
+                                    <?php
                                 }
                             }
                             ?>
                         </div>
                         <div class="col">
-                            <a href="#" class="btn btn-success btn-block">+</a>
+                            <a href="#" class="btn btn-success btn-block">Add to cart</a>
                         </div>
                     </div>
                 </div>
@@ -92,57 +135,57 @@ function artikelenSite() {
     }
 }
 
-// Zoek functie
 function zoeken($zoekopdracht) {
-    $AlleProductenarray = ophalenArtikelen();
-    $zoekArray = array();
-    $beschrijvingArray = ophalenBeschrijving();
-    $prijsArray = ophalenPrijs();
-    $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
-    $user = "root";
-    $pass = "";
-    $pdo = new PDO($db, $user, $pass);
-
-    $query = $pdo->prepare("SELECT * FROM stockitems WHERE StockItemName LIKE '%$zoekopdracht%'");
-    $query->execute();
-    $array = array();
-
-    while ($row = $query->fetch()) {
-        $zoekResulataten = $row["StockItemName"];
-        $id = $row["StockItemID"];
-        $array[$id] = $zoekResulataten;
-    }
+    list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
+    $zoekopdrachtArray = array();
+    $zoekopdracht = strtolower($zoekopdracht);
+    $filterNaamArray = filterenNaam();
+    $filterBeschrijvingArray = filterenBeschrijving();
 
     if (empty($zoekopdracht)) {
         artikelenSite();
-    }
-    elseif (empty($array) == false) {
-        foreach ($array as $id => $product) {
+    } elseif (empty($zoekopdracht) == false) {
+        foreach ($filterNaamArray as $id => $artikel) {
+            $artikel = strtolower($artikel);
+            if (strpos($artikel, $zoekopdracht) !== FALSE) {
+                $zoekopdrachtArray[$id] = $artikel;
+            }
+        }
+
+        foreach ($zoekopdrachtArray as $id => $product) {
             ?>
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card">
                     <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
                     <div class="card-body">
-                        <h4 class="card-title"><a href="product.html" title="View Product"><?php print($product) ?></a></h4>
+                        <h4 class="card-title"><a href="product.html" title="View Product"><?php
+                                foreach ($filterNaamArray as $key => $artikel) {
+                                    if ($id == $key) {
+                                        print($artikel);
+                                    }
+                                }
+                                ?></a></h4>
                         <?php
-                        foreach ($beschrijvingArray as $key => $beschrijving) {
+                        foreach ($filterBeschrijvingArray as $key => $beschrijving) {
                             if ($id == $key) {
                                 ?>  <p class="card-text"><?php print($beschrijving); ?></p> <?php
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
                         <div class="row">
                             <div class="col">
                                 <?php
-                                foreach ($prijsArray as $key2 => $prijs) {
-                                    if ($id == $key2) {
-                                        ?><p class="btn btn-danger btn-block">€ <?php print($prijs); ?></p><?php
+                                foreach ($prijsArray as $key => $prijs) {
+                                    if ($id == $key) {
+                                        ?>
+                                        <p class="btn btn-danger btn-block"> <?php print($prijs); ?></p>
+                                        <?php
                                     }
                                 }
                                 ?>
                             </div>
                             <div class="col">
-                                <a href="#" class="btn btn-success btn-block">+</a>
+                                <a href="#" class="btn btn-success btn-block">Add to cart</a>
                             </div>
                         </div>
                     </div>
@@ -150,8 +193,7 @@ function zoeken($zoekopdracht) {
             </div>
             <?php
         }
-    }
-    else {
+    } else {
         print("Geen zoekresultaten gevonden!");
     }
 }
