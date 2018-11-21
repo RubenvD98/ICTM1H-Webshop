@@ -164,6 +164,7 @@ function filterenBeschrijving() {
 }
 
 function artikelenSite() {
+    
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
     list($filterNaamArray, $naamMaatArray) = filterenNaam();
     foreach ($filterNaamArray as $id => $product) {
@@ -225,13 +226,8 @@ function zoeken($zoekopdracht) {
                 <div class="card">
                     <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
                     <div class="card-body">
-                        <h4 class="card-title"><a href="product.html" title="View Product"><?php
-                                foreach ($filterNaamArray as $key => $artikel) {
-                                    if ($id == $key) {
-                                        print($artikel);
-                                    }
-                                }
-                                ?></a></h4>
+                        <?php print('<h4 class="card-title"><a href="product.php?id=' . $id . '" title="View Product" id="<?php $id ?>"> ' . $product . '</a></h4>'); ?>
+                    <?php
                         <?php
                         foreach ($beschrijvingArray as $key => $beschrijving) {
                             if ($id == $key) {
