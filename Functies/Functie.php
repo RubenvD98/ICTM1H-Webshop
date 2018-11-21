@@ -40,44 +40,96 @@ function WaardesOphalen() {
 }
 
 function filterenNaam() {
-    $woordLengte = 0;
+    /* Variabelen die nodig zijn voor/in de loop */
+    $productMaat = ""; //wordt gevuld in de loop
+    $productMaten = array();
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
-    $filterMaatArray = array();
-    $maten = array("3XS", "2XS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL");
+    $productNamen = array();
+    $productKleuren = array();
+    $naamMaatArray = array();
+    $naamKleurArray = array();
+    $vorigProduct = "";
+    $ruwProduct = "";
+    $beschikbareKleuren = array("(White)", "(Black)", "(Green)", "(Gray)");
+    $beschikbareMaten = array("3XS", "XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL");
+    /* Voor elk product moet worden nagegaan of er een maat in de naam zit.*/
     foreach ($artikelArray as $id => $product) {
-        $woordLengte = strlen($product);
-        if (in_array(substr($product, $woordLengte - 3), $maten)) {
-            $product = substr($product, 0, -3);
-            if (in_array($product, $filterMaatArray) == false) {
-                $filterMaatArray[$id] = $product;
+        /* Er moet voor elke kleur worden nagegaan of deze in de variabele $product zit */
+        foreach($beschikbareKleuren as $key => $kleur){
+            if(strpos($product, $kleur) != FALSE){
+                $product = str_replace($kleur, "", $product);
+                $productKleuren[] = $kleur;
             }
-        } else {
-            if (in_array(substr($product, $woordLengte - 2), $maten)) {
-                $product = substr($product, 0, -2);
-                if (in_array($product, $filterMaatArray) == false) {
-                    $filterMaatArray[$id] = $product;
+        }
+        /* Er moet worden nagegaan of de laatste 3 letters een maat is en dus in de $beschikbareMaten staat */
+        if (in_array(substr($product, - 3), $beschikbareMaten)) {
+            /* De laatste 3 letters van het product (de maat) worden opgeslagen in een variabele */
+            $productMaat = substr($product, -3);
+            /* Het product wordt vervangen door het product zonder de maat */
+            $product = substr($product, 0, -3);
+            /* Om dubbelingen te voorkomen wordt de $productNamen array doorzocht naar het product, als deze niet in de array staat wordt deze toegevoegd */
+            if (in_array($product, $productNamen) == false) {
+                $productNamen[$id] = $product;
+            }
+            /* De maten worden opgeslagen in de array $productMaten */
+            if ($product === $vorigProduct){
+                if(in_array($productMaat, $productMaten) === FALSE){
+                        $productMaten[] = $productMaat;
                 }
+                    } else { 
+                        unset($productMaten);
+                        if(empty($productMaten) === TRUE){
+                            $productMaten[] = $productMaat;
+                        }
+                    }
+            /* Deze code wordt herhaalt, er wordt alleen gecheckt of de laatste 2 letters in de beschikbareMaten staat. */
+        } else {
+            if (in_array(substr($product, - 2), $beschikbareMaten)) {
+                $productMaat = substr($product, -2);
+                $product = substr($product, 0, -2);
+                if (in_array($product, $productNamen) == false) {
+                    $productNamen[$id] = $product;
+                }
+                if ($product === $vorigProduct){
+                      if(in_array($productMaat, $productMaten) === FALSE){
+                        $productMaten[] = $productMaat;
+                }
+                    } else { 
+                        unset($productMaten);
+                        if(empty($productMaten) == TRUE){
+                            $productMaten[] = $productMaat;
+                        }
+                    }
+                /* Deze code wordt herhaalt, er wordt alleen gecheckt of de laatste letter in de beschikbareMaten staat. */
             } else {
-                if (in_array(substr($product, $woordLengte - 1), $maten)) {
+                if (in_array(substr($product, - 1), $beschikbareMaten)) {
+                    $productMaat = substr($product, -1);
                     $product = substr($product, 0, -1);
-                    if (in_array($product, $filterMaatArray) == false) {
-                        $filterMaatArray[$id] = $product;
+                    if (in_array($product, $productNamen) == false) {
+                        $productNamen[$id] = $product;
+                    }
+                    if ($product === $vorigProduct){
+                        if(in_array($productMaat, $productMaten) === FALSE){
+                        $productMaten[] = $productMaat;
+                }
+                    } else { 
+                        unset($productMaten);
+                        if(empty($productMaten) == TRUE){
+                            $productMaten[] = $productMaat;
+                        }
                     }
                 } else {
-                    $filterMaatArray[$id] = $product;
-                }
+                    $productNamen[$id] = $product;
+                } 
             }
-        }
+            }
+        $naamMaatArray[$product] = $productMaten;
+        $vorigProduct = $product;
+        $naamKleurArray[$product] = $productKleuren;
+        
     }
-    $kleurArray = array("(White)", "(Black)", "(Green)", "(Gray)");
-    $filterArray = array();
-    foreach ($filterMaatArray as $id => $product) {
-        $product = str_replace($kleurArray, "", $product);
-        if (in_array($product, $filterArray) == false) {
-            $filterArray[$id] = $product;
-        }
-    }
-    return $filterArray;
+    
+    return array($productNamen, $naamMaatArray, $naamKleurArray);
 }
 
 function filterenBeschrijving() {
@@ -113,7 +165,7 @@ function filterenBeschrijving() {
 
 function artikelenSite() {
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
-    $filterNaamArray = filterenNaam();
+    list($filterNaamArray, $naamMaatArray) = filterenNaam();
     $filterBeschrijvingArray = filterenBeschrijving();
     foreach ($filterNaamArray as $id => $product) {
         ?>
@@ -123,7 +175,7 @@ function artikelenSite() {
                 <div class="card-body">
                     <h4 class="card-title"><a href="product.html" title="View Product"><?php print($product) ?></a></h4>
                     <?php
-                    foreach ($filterBeschrijvingArray as $key => $beschrijving) {
+                    foreach ($BeschrijvingArray as $key => $beschrijving) {
                         if ($id == $key) {
                             ?>  <p class="card-text"><?php print($beschrijving); ?></p> <?php
                             }
@@ -154,6 +206,7 @@ function artikelenSite() {
 
 function zoeken($zoekopdracht) {
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
+    list($filterNaamArray, $naamMaatArray) = filterenNaam();
     $zoekopdrachtArray = array();
     $zoekopdracht = strtolower($zoekopdracht);
     $filterNaamArray = filterenNaam();
