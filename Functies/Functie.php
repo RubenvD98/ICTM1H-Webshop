@@ -208,8 +208,6 @@ function zoeken($zoekopdracht) {
     list($filterNaamArray, $naamMaatArray) = filterenNaam();
     $zoekopdrachtArray = array();
     $zoekopdracht = strtolower($zoekopdracht);
-    $filterNaamArray = filterenNaam();
-    $filterBeschrijvingArray = filterenBeschrijving();
 
     if (empty($zoekopdracht)) {
         artikelenSite();
