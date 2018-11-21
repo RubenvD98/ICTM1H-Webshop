@@ -7,9 +7,11 @@
     <script src="../js/umd/popper.min.js"></script>
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/Model.css">
-    <link rel="stylesheet" href="../css/Sidenav.css">
     <script src="../js/bootstrap.min.js"></script>
-    <?php include 'functiontest.php'; ?>
+    <?php
+    include 'functiontest.php';
+    $id = $_GET['id'];
+    ?>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -18,14 +20,13 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
                 <ul class="navbar-nav mt-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="../Home/Home.php">Home</a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="../Categories/Categories.php">Producten<span class="sr-only">(current)</span></a>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../Categories/Categories.php">Producten</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../Contact/Contact.php">Contact</a>
@@ -45,11 +46,10 @@
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0">
                             <a class="btn btn-success btn-sm ml-3" href="../Winkelwagen/Winkelwagen.php">
-                                <i class="fa fa-shopping-cart"></i>Winkelwagen<span class="badge badge-light"></span>
+                                <i class="fa fa-shopping-cart"></i>Winkelwagen<span class="badge badge-light"></span><span class="sr-only">(current)</span>
                             </a>
                         </form>
-                    </li>
-                    <!-- Button to open the modal login/signup form -->
+                        <!-- Button to open the modal login form -->
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0">
                             <div class="btn-group ml-3">
@@ -68,40 +68,130 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="../Home/Home.php">Home</a></li>
-                        <li class="breadcrumb-item"><a href="Categories.php">Producten</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Algemeen</li>
+                        <li class="breadcrumb-item active"><a href="Winkelwagen.php">Producten</a></li>
                     </ol>
                 </nav>
             </div>
         </div>
     </div>
-    <!-- Tabs voor de categorieën -->
-    <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <h2>Categorieën</h2>
-      <a href="Algemeen.php">Algemeen</a>
-      <a href="kleren.php">Kleren</a>
-      <a href="Mokken.php">Mokken</a>
-      <a href="USB.php">USB Sticks</a>
-      <a href="pantovels.php">Pantovels</a>
-      <a href="Speelgoed.php">Speelgoed</a>
-      <a href="VerpakingMateriaal.php">Verpaking Materiaal</a>
-    </div>
-    <div class="sticky-top sidenavposition">
-      <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Categorieën</span>
-    </div>
-    <br><br><br>
 
-    <div class="container-fluid">
-            <!-- Het laten zien van de producten -->
-          <div class="row">
-              <?php
-                $zoekopdracht = filter_input(INPUT_GET, "zoek", FILTER_SANITIZE_STRING);
-                zoeken($zoekopdracht);
-              ?>
-          </div>
-        <br>
-    </div>
+    <div class="card">
+        <div class="row">
+            <aside class="col-sm-5 border-right">
+                <article class="gallery-wrap">
+                    <div class="img-big-wrap">
+                        <div> <a href="#"><img src="https://s9.postimg.org/tupxkvfj3/image.jpg"></a></div>
+                    </div> <!-- slider-product.// -->
+                    <div class="img-small-wrap">
+                        <div class="item-gallery"> <img src="https://s9.postimg.org/tupxkvfj3/image.jpg"> </div>
+                        <div class="item-gallery"> <img src="https://s9.postimg.org/tupxkvfj3/image.jpg"> </div>
+                        <div class="item-gallery"> <img src="https://s9.postimg.org/tupxkvfj3/image.jpg"> </div>
+                        <div class="item-gallery"> <img src="https://s9.postimg.org/tupxkvfj3/image.jpg"> </div>
+                    </div> <!-- slider-nav.// -->
+                </article> <!-- gallery-wrap .end// -->
+            </aside>
+            <aside class="col-sm-7">
+                <article class="card-body p-5">
+                    <h3 class="title mb-3">
+                        <?php
+                        list($artikelNaamArray, $naamMaatArray) = filterenNaam();
+                        $artikelNaam = "";
+                        foreach ($artikelNaamArray as $key => $artikel) {
+                            if ($key == $id) {
+                                print($artikel);
+                                $artikelNaam = $artikel;
+                            }
+                        }
+                        ?>
+                    </h3>
+
+                    <p class="price-detail-wrap">
+                        <span class="price h3 text-warning">
+                            <span class="currency">€</span><span class="num">
+                                <?php
+                                //Prijzen bij het gewenste product
+                                list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
+                                foreach ($prijsArray as $key => $prijs) {
+                                    if ($id == $key) {
+                                        print($prijs);
+                                    }
+                                }
+                                ?>
+                            </span>
+                        </span>
+                    </p> <!-- price-detail-wrap .// -->
+                    <dl class="item-property">
+                        <dt>Beschrijving</dt>
+                        <dd><p>
+                                <?php
+                                foreach ($beschrijvingArray as $key => $beschrijving) {
+                                    if ($key == $id) {
+                                        print($beschrijving);
+                                    }
+                                }
+                                ?>
+                            </p></dd>
+                    </dl>
+                    <!-- item-property-hor .// -->
+                    <dl class="param param-feature">
+                        <dt>Kleur</dt>
+                        <dd>Black and white</dd>
+                    </dl>  <!-- item-property-hor .// -->
+                    <dl class="param param-feature">
+                        <dt>Bezorging</dt>
+                        <dd>Nederland</dd>
+                    </dl>  <!-- item-property-hor .// -->
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <dl class="param param-inline">
+                                <dt>Hoeveelheid: </dt>
+                                <dd>
+                                    <select class="form-control form-control-sm" style="width:70px;">
+                                        <option> 1 </option>
+                                        <option> 2 </option>
+                                        <option> 3 </option>
+                                    </select>
+                                </dd>
+                            </dl>  <!-- item-property .// -->
+                        </div> <!-- col.// -->
+                        <div class="col-sm-7">
+                            <dl class="param param-inline">
+                                <dt>Maat: </dt>
+                                <dd>
+                                    <?php
+                                    /* De array naamMaat moet worden doorgelopen */
+                                    foreach ($naamMaatArray as $productNaam => $maatArray) {
+                                        /* Het artikel van de pagina moet worden vergeleken met het artikel dat in de array staat */
+                                        if ($productNaam === $artikelNaam) {
+                                            /* Nu moet de maatArray worden doorgelopen */
+                                            foreach ($maatArray as $key => $maat) {
+                                                ?>
+                                                <!-- Er worden radiobuttons aangemaakt met daarin de maat-->
+                                                <label class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                    <span class="form-check-label"><?php print($maat); ?></span>
+                                                </label>
+                                                <?php
+                                            }
+                                        }
+                                    }
+                                    ?> 
+
+                                </dd>
+                            </dl>  <!-- item-property .// -->
+                        </div> <!-- col.// -->
+
+                    </div> <!-- row.// -->
+                    <hr>
+                    <a href="#" class="btn btn-lg btn-primary text-uppercase"> Buy now </a>
+                    <a href="#" class="btn btn-lg btn-outline-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Add to cart </a>
+                </article> <!-- card-body.// -->
+            </aside> <!-- col.// -->
+        </div> <!-- row.// -->
+    </div> <!-- card.// -->
+
 
     <!-- The Modal login -->
     <div id="login" class="modal">
@@ -167,11 +257,10 @@
         </form>
     </div>
 
-
     <!-- Footer -->
-    <footer class="text-light bg-dark">
-        <div id="wrap" class="container">
-            <div id="main" class="row clear-top">
+    <footer class="text-light bg-dark" id="footer">
+        <div class="container">
+            <div class="row">
                 <div class="col-md-3 col-lg-4 col-xl-3">
                     <h5>About</h5>
                     <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
@@ -212,22 +301,24 @@
                         <li><i class="fa fa-print mr-2"></i> + 33 12 14 15 16</li>
                     </ul>
                 </div>
-                <div class="col-12 copyright mt-3">
-                    <p class="float-left">
-                        <a href="#">Back to top</a>
-                    </p>
-                </div>
             </div>
         </div>
     </footer>
 
     <script>
-    function openNav() {
-      document.getElementById("mySidenav").style.width = "300px";
-    }
-    function closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
-    }
+        // Get the modal
+        var modal = document.getElementById('login');
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
         // Get the modal
         var modal = document.getElementById('login');
         // When the user clicks anywhere outside of the modal, close it
