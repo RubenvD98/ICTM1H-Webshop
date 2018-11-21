@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+include '../functies/dbConfig.php';
+include '../Functies/Functie.php';
+?>
 <!doctype html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -8,7 +11,6 @@
     <link rel="stylesheet" href="../css/Model.css">
     <link rel="stylesheet" href="../css/Sidenav.css">
     <script src="../js/bootstrap.min.js"></script>
-    <?php include '../Functies/Functie.php'; ?>
 </head>
 <body>
     <!-- NavigatieBalk -->
@@ -32,7 +34,7 @@
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0" action="Categories.php" method="get">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." name="zoek">
+                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Zoeken...." name="zoek">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-secondary btn-number">
                                         <i class="fa fa-search"></i>
@@ -85,7 +87,7 @@
       <a href="Speelgoed.php">Speelgoed</a>
       <a href="VerpakingMateriaal.php">Verpaking Materiaal</a>
     </div>
-    <div class="sticky-top sidenavposition">
+    <div class="sticky-top sidenavposition ">
       <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Categorieën</span>
     </div>
     <br><br><br>
@@ -145,7 +147,7 @@
                 <label for="email"><b>Email</b></label>
                 <input class="signup" type="text" placeholder="Email" name="email" required>
 
-                <label for="wachtwoord"><b>Wacthwoord</b></label>
+                <label for="wachtwoord"><b>Wachtwoord</b></label>
                 <input class="signup" type="password" placeholder="Wacthwoord" name="wachtwoord" required>
 
                 <label for="wachtwoord-repeat"><b>Herhaal Wachtwoord</b></label>
@@ -159,7 +161,7 @@
 
                 <div class="btn-group">
                     <button class="btn btn-danger" type="button" onclick="document.getElementById('signup').style.display = 'none'">Annuleren</button>
-                    <button class="btn btn-success" type="submit">Registeren</button>
+                    <button class="btn btn-success" type="submit">Registreren</button>
                 </div>
             </div>
         </form>

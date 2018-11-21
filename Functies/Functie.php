@@ -1,4 +1,6 @@
 <?php
+include '../Functies/dbConfig.php';
+
 // Ophalen van de artikel namen
 function WaardesOphalen() {
     $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
@@ -21,7 +23,6 @@ function WaardesOphalen() {
     }
     return array($beschrijvingArray, $Array, $prijsArray);
 }
-
  function login($uname, $psw)
     {
                 $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
@@ -38,7 +39,6 @@ function WaardesOphalen() {
     }
     return $array;
 }
-
 function filterenNaam() {
     /* Variabelen die nodig zijn voor/in de loop */
     $productMaat = ""; //wordt gevuld in de loop
@@ -76,7 +76,7 @@ function filterenNaam() {
                 if(in_array($productMaat, $productMaten) === FALSE){
                         $productMaten[] = $productMaat;
                 }
-                    } else { 
+                    } else {
                         unset($productMaten);
                         if(empty($productMaten) === TRUE){
                             $productMaten[] = $productMaat;
@@ -94,7 +94,7 @@ function filterenNaam() {
                       if(in_array($productMaat, $productMaten) === FALSE){
                         $productMaten[] = $productMaat;
                 }
-                    } else { 
+                    } else {
                         unset($productMaten);
                         if(empty($productMaten) == TRUE){
                             $productMaten[] = $productMaat;
@@ -112,7 +112,7 @@ function filterenNaam() {
                         if(in_array($productMaat, $productMaten) === FALSE){
                         $productMaten[] = $productMaat;
                 }
-                    } else { 
+                    } else {
                         unset($productMaten);
                         if(empty($productMaten) == TRUE){
                             $productMaten[] = $productMaat;
@@ -120,26 +120,23 @@ function filterenNaam() {
                     }
                 } else {
                     $productNamen[$id] = $product;
-                } 
+                }
             }
             }
         $naamMaatArray[$product] = $productMaten;
         $vorigProduct = $product;
         $naamKleurArray[$product] = $productKleuren;
-        
+
     }
-    
+
     return array($productNamen, $naamMaatArray, $naamKleurArray);
 }
-
 function filterenBeschrijving() {
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
-
     $kleurArray = array("(White)", "(Black)", "(Green)", "(Gray)");
     $maten = array("3XS", "2XS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL");
     $beschrijvingLengte = 0;
     $filterMaatArray = array();
-
     foreach ($beschrijvingArray as $id => $beschrijving) {
         $beschrijvingLengte = strlen($beschrijving);
         foreach ($maten as $key => $maat) {
@@ -152,29 +149,27 @@ function filterenBeschrijving() {
         }
     }
         $filterArray = array();
-    
+
         foreach ($filterMaatArray as $id => $beschrijving) {
             $beschrijving = str_replace($kleurArray, "", $beschrijving);
             if (in_array($beschrijving, $filterArray) == false) {
                 $filterArray[$id] = $beschrijving;
             }
         }
-    
+
     return $filterMaatArray;
 }
-
 function artikelenSite() {
-    
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
     list($filterNaamArray, $naamMaatArray) = filterenNaam();
+    $filterBeschrijvingArray = filterenBeschrijving();
     foreach ($filterNaamArray as $id => $product) {
         ?>
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
-                <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
+                <img class="card-img-top" src="../IMG/chocolade.jpg" alt="Card image cap">
                 <div class="card-body">
-                     <?php print('<h4 class="card-title"><a href="product.php?id=' . $id . '" title="View Product" id="<?php $id ?>"> ' . $product . '</a></h4>'); ?>
-                    <?php
+                    <?php print('<h4 class="card-title"><a href="../Product/Product.php?id=' . $id . '" title="View Product" id="<?php $id ?>"> ' . $product . '</a></h4>');
                     foreach ($beschrijvingArray as $key => $beschrijving) {
                         if ($id == $key) {
                             ?>  <p class="card-text"><?php print($beschrijving); ?></p> <?php
@@ -187,14 +182,14 @@ function artikelenSite() {
                             foreach ($prijsArray as $key => $prijs) {
                                 if ($id == $key) {
                                     ?>
-                                    <p class="btn btn-danger btn-block"> <?php print($prijs); ?></p>
+                                    <p class="btn btn-danger btn-block"> <?php print("€" . $prijs); ?></p>
                                     <?php
                                 }
                             }
                             ?>
                         </div>
                         <div class="col">
-                            <a href="#" class="btn btn-success btn-block">Add to cart</a>
+                            <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>">Toevoegen</a>
                         </div>
                     </div>
                 </div>
@@ -203,13 +198,11 @@ function artikelenSite() {
         <?php
     }
 }
-
 function zoeken($zoekopdracht) {
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
     list($filterNaamArray, $naamMaatArray) = filterenNaam();
     $zoekopdrachtArray = array();
     $zoekopdracht = strtolower($zoekopdracht);
-
     if (empty($zoekopdracht)) {
         artikelenSite();
     } elseif (empty($zoekopdracht) == false) {
@@ -219,15 +212,20 @@ function zoeken($zoekopdracht) {
                 $zoekopdrachtArray[$id] = $artikel;
             }
         }
-
         foreach ($zoekopdrachtArray as $id => $product) {
             ?>
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card">
-                    <img class="card-img-top" src="https://dummyimage.com/600x400/55595c/fff" alt="Card image cap">
+                    <img class="card-img-top" src="../IMG/chocolade.jpg" alt="Card image cap">
                     <div class="card-body">
-                        <?php print('<h4 class="card-title"><a href="product.php?id=' . $id . '" title="View Product" id="<?php $id ?>"> ' . $product . '</a></h4>'); ?>
-                    <?php
+                        <?php print('<h4 class="card-title"><a href="../Product/Product.php?id=' . $id . '" title="View Product" id="<?php $id ?>"> ' . $product . '</a></h4>');
+                                foreach ($filterNaamArray as $key => $artikel) {
+                                    if ($id == $key) {
+                                        print($artikel);
+                                    }
+                                }
+                                ?>
+                              </a></h4>
                         <?php
                         foreach ($beschrijvingArray as $key => $beschrijving) {
                             if ($id == $key) {
@@ -248,7 +246,7 @@ function zoeken($zoekopdracht) {
                                 ?>
                             </div>
                             <div class="col">
-                                <a href="#" class="btn btn-success btn-block">Add to cart</a>
+                                <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>">Toevoegen</a>
                             </div>
                         </div>
                     </div>
@@ -259,46 +257,4 @@ function zoeken($zoekopdracht) {
     } else {
         print("Geen zoekresultaten gevonden!");
     }
-}
-
-
-// Catogorie selectie
-//function CAlgemeen($value='')
-//{
-//  select * from stockItems as SISG
-//  where stockItemID in (select stockItemID
-//                        From stockitemstockgroups
-//                        where stockGroupID = (select stockGroupID
-//                                              from stockgroups
-//                                              where stockGroupID = 1, 4, 5, 6,))
-//}
-
-function CKleren($value='')
-{
-  // code...
-}
-
-function CMokken($value='')
-{
-  // code...
-}
-
-function CUSB($value='')
-{
-  // code...
-}
-
-function CPantovels($value='')
-{
-  // code...
-}
-
-function CSpeelgoed($value='')
-{
-  // code...
-}
-
-function CVerpakingMateriaal($value='')
-{
-  // code...
 }

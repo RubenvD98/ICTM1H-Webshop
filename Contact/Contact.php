@@ -41,7 +41,7 @@
                     </li>
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0">
-                            <a class="btn btn-success btn-sm ml-3" href="../Winkelwagen/Winkelwagen.php">
+                            <a class="btn btn-success btn-sm ml-3" href="../Categories/Winkelwagen.php">
                                 <i class="fa fa-shopping-cart"></i>Winkelwagen<span class="badge badge-light"></span>
                             </a>
                         </form>

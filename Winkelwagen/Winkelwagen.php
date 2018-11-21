@@ -1,13 +1,32 @@
-<?php session_start(); ?>
+<?php
+include '../Functies/dbConfig.php';
+include '../Functies/Functie.php';
+include 'Cart.php';
+$cart = new Cart;
+?>
 <!doctype html>
 <head>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="../js/jqeury-3.3.1.slim.min.js"></script>
     <script src="../js/umd/popper.min.js"></script>
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/Model.css">
     <script src="../js/bootstrap.min.js"></script>
-    <?php include '../Functies/Functie.php'; ?>
+    <script>
+        function updateCartItem(obj, id) {
+            $.get("CartAction.php", {action: "updateCartItem", id: id, qty: obj.value}, function (data) {
+                if (data == 'ok') {
+                    location.reload();
+                } else {
+                    alert('Cart update failed, please try again.');
+                }
+            });
+        }
+    </script>
+    <style>
+        input[type="number"]{width: 20%;}
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -30,7 +49,7 @@
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0" action="Categories.php" method="get">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." name="zoek">
+                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Zoeken...." name="zoek">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-secondary btn-number">
                                         <i class="fa fa-search"></i>
@@ -41,7 +60,7 @@
                     </li>
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0">
-                            <a class="btn btn-success btn-sm ml-3" href="../Winkelwagen/Winkelwagen.php">
+                            <a class="btn btn-success btn-sm ml-3" href="Winkelwagen.php">
                                 <i class="fa fa-shopping-cart"></i>Winkelwagen<span class="badge badge-light"></span><span class="sr-only">(current)</span>
                             </a>
                         </form>
@@ -116,7 +135,7 @@
                 <label for="email"><b>Email</b></label>
                 <input class="signup" type="text" placeholder="Email" name="email" required>
 
-                <label for="wachtwoord"><b>Wacthwoord</b></label>
+                <label for="wachtwoord"><b>Wachtwoord</b></label>
                 <input class="signup" type="password" placeholder="Wacthwoord" name="wachtwoord" required>
 
                 <label for="wachtwoord-repeat"><b>Herhaal Wachtwoord</b></label>
@@ -130,10 +149,58 @@
 
                 <div class="btn-group">
                     <button class="btn btn-danger" type="button" onclick="document.getElementById('signup').style.display = 'none'">Annuleren</button>
-                    <button class="btn btn-success" type="submit">Registeren</button>
+                    <button class="btn btn-success" type="submit">Registreren</button>
                 </div>
             </div>
         </form>
+    </div>
+
+    <!-- winkel mandje -->
+    <div class="container">
+        <h1>Winkel mandje</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Prijs</th>
+                    <th>Aantal</th>
+                    <th>Subtotaal</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $aantalItems = 0;
+                if ($cart->total_items() > 0) {
+                    //get cart items from session
+                    $cartItems = $cart->contents();
+                    foreach ($cartItems as $item) {
+                        ?>
+                        <tr>
+                            <td><?php echo $item["name"]; ?></td>
+                            <td><?php echo '€' . $item["price"]; ?></td>
+                            <td><input type="number" class="form-control text-center" value="<?php echo $item["qty"]; ?>" onchange="updateCartItem(this, '<?php echo $item["rowid"]; ?>')"></td>
+                            <td><?php echo '€' . $item["subtotal"]; ?></td>
+                            <td>
+                                <a href="CartAction.php?action=removeCartItem&id=<?php echo $item["rowid"]; ?>" class="btn btn-danger btn-block">Verwijderen</a>
+                            </td>
+                        </tr>
+                    <?php }
+                } else { ?>
+                    <tr><td colspan="5"><p>Winkelwagen is leeg.....</p></td>
+<?php } ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><a href="../Categories/Categories.php" class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i>Veder winkelen</a></td>
+                    <td colspan="2"></td>
+<?php if ($cart->total_items() > 0) { ?>
+                        <td class="text-center"><strong>Total <?php echo '€' . $cart->total(); ?></strong></td>
+                        <td><a href="../Betalen/Betalen.php" class="btn btn-success btn-block">Checkout <i class="glyphicon glyphicon-menu-right"></i></a></td>
+<?php } ?>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 
     <!-- Footer -->
@@ -185,6 +252,7 @@
     </footer>
 
     <script>
+
         // Get the modal
         var modal = document.getElementById('login');
         // When the user clicks anywhere outside of the modal, close it

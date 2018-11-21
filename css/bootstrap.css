@@ -9061,4 +9061,15 @@ a.text-dark:hover, a.text-dark:focus {
         border-color: #dee2e6;
     }
 }
+
+.glyphicon-trash:before{
+  content:"\e020"
+}
+
+.glyphicon-shopping-cart:before{
+  content:"\e116"
+}
+
+
+
 /*# sourceMappingURL=bootstrap.css.map */

@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+include '../Functies/dbConfig.php';
+include '../Functies/Functie.php';
+?>
 <!doctype html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -8,7 +11,6 @@
     <link rel="stylesheet" href="../css/Model.css">
     <link rel="stylesheet" href="../css/Sidenav.css">
     <script src="../js/bootstrap.min.js"></script>
-    <?php include '../Functies/Functie.php'; ?>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -31,7 +33,7 @@
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0" action="Categories.php" method="get">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." name="zoek">
+                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Zoeken...." name="zoek">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-secondary btn-number">
                                         <i class="fa fa-search"></i>
@@ -85,20 +87,42 @@
       <a href="Speelgoed.php">Speelgoed</a>
       <a href="VerpakingMateriaal.php">Verpaking Materiaal</a>
     </div>
-    <div class="sticky-top sidenavposition">
+    <div class="sticky-top sidenavposition ">
       <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Categorieën</span>
     </div>
     <br><br><br>
 
     <div class="container-fluid">
-                <div class="row">
-                    <?php
-                    $zoekopdracht = filter_input(INPUT_GET, "zoek", FILTER_SANITIZE_STRING);
-                    zoeken($zoekopdracht);
+            <!-- Het laten zien van de producten -->
+          <div class="row">
+              <?php
+              $query = $db->query("SELECT * FROM stockItems WHERE StockItemID IN(SELECT StockItemID FROM stockitemstockgroups WHERE StockGroupID = 7) ORDER BY StockItemID");
+              if($query->num_rows > 0){
+                  while($row = $query->fetch_assoc()){
                     ?>
-                </div>
-                <br>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top" src="../IMG/chocolade.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title"><a href="../Product/Product.php?id=<?php echo $row["StockItemID"]; ?>" title="View Product"><?php echo $row["StockItemName"]; ?></a></h4>
+                                <p class="card-text"><?php echo $row["SearchDetails"]; ?></p>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="btn btn-danger btn-block"><?php echo '€' . $row["RecommendedRetailPrice"]; ?></p>
+                                    </div>
+                                    <div class="col">
+                                        <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $row["StockItemID"]; ?>">Toevoegen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  <?php } } else { ?>}
+                  <p>Geen zoekresultaten gevonden!</p>
+                <?php } ?>
             </div>
+        <br>
+    </div>
 
     <!-- The Modal login -->
     <div id="login" class="modal">
@@ -144,7 +168,7 @@
                 <label for="email"><b>Email</b></label>
                 <input class="signup" type="text" placeholder="Email" name="email" required>
 
-                <label for="wachtwoord"><b>Wacthwoord</b></label>
+                <label for="wachtwoord"><b>Wachtwoord</b></label>
                 <input class="signup" type="password" placeholder="Wacthwoord" name="wachtwoord" required>
 
                 <label for="wachtwoord-repeat"><b>Herhaal Wachtwoord</b></label>
@@ -158,7 +182,7 @@
 
                 <div class="btn-group">
                     <button class="btn btn-danger" type="button" onclick="document.getElementById('signup').style.display = 'none'">Annuleren</button>
-                    <button class="btn btn-success" type="submit">Registeren</button>
+                    <button class="btn btn-success" type="submit">Registreren</button>
                 </div>
             </div>
         </form>

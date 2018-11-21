@@ -1,14 +1,19 @@
-<?php session_start(); ?>
+<?php
+include '../Functies/dbConfig.php';
+include '../Functies/Functie.php';
+
+session_start();
+?>
 <!doctype html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="../js/jqeury-3.3.1.slim.min.js"></script>
-    <script src="../js/umd/popper.min.js"></script>
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/Model.css">
     <link rel="stylesheet" href="../css/Sidenav.css">
+    <script src="../js/jqeury-3.3.1.slim.min.js"></script>
+    <script src="../js/jqeury.min.js"></script>
+    <script src="../js/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
-    <?php include '../Functies/Functie.php'; ?>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -32,7 +37,7 @@
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0" action="Categories.php" method="get">
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." name="zoek">
+                                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Zoeken...." name="zoek">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-secondary btn-number">
                                         <i class="fa fa-search"></i>
@@ -44,7 +49,7 @@
                     <li class="nav-item">
                         <form class="form-inline my-2 my-lg-0">
                             <a class="btn btn-success btn-sm ml-3" href="../Winkelwagen/Winkelwagen.php">
-                                <i class="fa fa-shopping-cart"></i>Winkelwagen<span class="badge badge-light"></span>
+                                <i class="fa fa-shopping-cart"></i>Winkelwagen  <span class="badge badge-danger"></span>
                             </a>
                         </form>
                     </li>
@@ -76,29 +81,51 @@
     </div>
     <!-- Tabs voor de categorieën -->
     <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <h2>Categorieën</h2>
-      <a href="Algemeen.php">Algemeen</a>
-      <a href="kleren.php">Kleren</a>
-      <a href="Mokken.php">Mokken</a>
-      <a href="USB.php">USB Sticks</a>
-      <a href="pantovels.php">Pantovels</a>
-      <a href="Speelgoed.php">Speelgoed</a>
-      <a href="VerpakingMateriaal.php">Verpaking Materiaal</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <h2>Categorieën</h2>
+        <a href="Algemeen.php">Algemeen</a>
+        <a href="kleren.php">Kleren</a>
+        <a href="Mokken.php">Mokken</a>
+        <a href="USB.php">USB Sticks</a>
+        <a href="pantovels.php">Pantovels</a>
+        <a href="Speelgoed.php">Speelgoed</a>
+        <a href="VerpakingMateriaal.php">Verpaking Materiaal</a>
     </div>
     <div class="sticky-top sidenavposition">
-      <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Categorieën</span>
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Categorieën</span>
     </div>
     <br><br><br>
 
     <div class="container-fluid">
-            <!-- Het laten zien van de producten -->
-          <div class="row">
-              <?php
-                $zoekopdracht = filter_input(INPUT_GET, "zoek", FILTER_SANITIZE_STRING);
-                zoeken($zoekopdracht);
-              ?>
-          </div>
+        <!-- Het laten zien van de producten -->
+        <div class="row">
+            <?php
+            $query = $db->query("SELECT * FROM stockItems WHERE StockItemID IN(SELECT StockItemID FROM stockitemstockgroups WHERE StockGroupID = 1) ORDER BY StockItemID");
+            if ($query->num_rows > 0) {
+                while ($row = $query->fetch_assoc()) {
+                    ?>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top" src="../IMG/chocolade.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title"><a href="../Product/Product.php?id=<?php echo $row["StockItemID"]; ?>" title="View Product"><?php echo $row["StockItemName"]; ?></a></h4>
+                                <p class="card-text"><?php echo $row["SearchDetails"]; ?></p>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="btn btn-danger btn-block"><?php echo '€' . $row["RecommendedRetailPrice"]; ?></p>
+                                    </div>
+                                    <div class="col">
+                                        <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $row["StockItemID"]; ?>">Toevoegen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php }
+            } else { ?>}
+                <p>Geen zoekresultaten gevonden!</p>
+<?php } ?>
+        </div>
         <br>
     </div>
 
@@ -146,7 +173,7 @@
                 <label for="email"><b>Email</b></label>
                 <input class="signup" type="text" placeholder="Email" name="email" required>
 
-                <label for="wachtwoord"><b>Wacthwoord</b></label>
+                <label for="wachtwoord"><b>Wachtwoord</b></label>
                 <input class="signup" type="password" placeholder="Wacthwoord" name="wachtwoord" required>
 
                 <label for="wachtwoord-repeat"><b>Herhaal Wachtwoord</b></label>
@@ -160,7 +187,7 @@
 
                 <div class="btn-group">
                     <button class="btn btn-danger" type="button" onclick="document.getElementById('signup').style.display = 'none'">Annuleren</button>
-                    <button class="btn btn-success" type="submit">Registeren</button>
+                    <button class="btn btn-success" type="submit">Registreren</button>
                 </div>
             </div>
         </form>
@@ -221,13 +248,13 @@
     </footer>
 
     <script>
-    function openNav() {
-      document.getElementById("mySidenav").style.width = "300px";
-    }
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "300px";
+        }
 
-    function closeNav() {
-      document.getElementById("mySidenav").style.width = "0";
-    }
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
         // Get the modal
         var modal = document.getElementById('login');
         // When the user clicks anywhere outside of the modal, close it

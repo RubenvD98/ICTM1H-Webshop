@@ -1,17 +1,17 @@
-<?php session_start(); ?>
+<?php
+include '../functies/dbConfig.php';
+include '../Functies/Functie.php';
+$id = $_GET['id'];
+?>
 <!doctype html>
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="../js/jqeury-3.3.1.slim.min.js"></script>
-    <script src="../js/umd/popper.min.js"></script>
-    <link rel="stylesheet" href="../css/bootstrap.css">
-    <link rel="stylesheet" href="../css/Model.css">
-    <script src="../js/bootstrap.min.js"></script>
-    <?php
-    include 'functiontest.php';
-    $id = $_GET['id'];
-    ?>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="../js/jqeury-3.3.1.slim.min.js"></script>
+  <script src="../js/umd/popper.min.js"></script>
+  <link rel="stylesheet" href="../css/bootstrap.css">
+  <link rel="stylesheet" href="../css/Model.css">
+  <link rel="stylesheet" href="../css/Sidenav.css">
+  <script src="../js/bootstrap.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -32,7 +32,7 @@
                         <a class="nav-link" href="../Contact/Contact.php">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <form class="form-inline my-2 my-lg-0" action="Categories.php" method="get">
+                        <form class="form-inline my-2 my-lg-0" action="../Categories/Categories.php" method="get">
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search..." name="zoek">
                                 <div class="input-group-append">
@@ -80,7 +80,7 @@
             <aside class="col-sm-5 border-right">
                 <article class="gallery-wrap">
                     <div class="img-big-wrap">
-                        <div> <a href="#"><img src="https://s9.postimg.org/tupxkvfj3/image.jpg"></a></div>
+                        <div> <a href="#"><img src="../IMG/chocolade.jpg"></a></div>
                     </div> <!-- slider-product.// -->
                     <div class="img-small-wrap">
                         <div class="item-gallery"> <img src="https://s9.postimg.org/tupxkvfj3/image.jpg"> </div>
@@ -177,7 +177,7 @@
                                             }
                                         }
                                     }
-                                    ?> 
+                                    ?>
 
                                 </dd>
                             </dl>  <!-- item-property .// -->
@@ -185,8 +185,7 @@
 
                     </div> <!-- row.// -->
                     <hr>
-                    <a href="#" class="btn btn-lg btn-primary text-uppercase"> Buy now </a>
-                    <a href="#" class="btn btn-lg btn-outline-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Add to cart </a>
+                    <a href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>" class="btn btn-lg btn-outline-success text-uppercase"> <i class="fas fa-shopping-cart"></i> Toevoegen </a>
                 </article> <!-- card-body.// -->
             </aside> <!-- col.// -->
         </div> <!-- row.// -->
@@ -306,19 +305,14 @@
     </footer>
 
     <script>
-        // Get the modal
-        var modal = document.getElementById('login');
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "300px";
+      }
 
-</body>
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+      }
 
-</html>
         // Get the modal
         var modal = document.getElementById('login');
         // When the user clicks anywhere outside of the modal, close it
@@ -329,5 +323,4 @@
         }
     </script>
 </body>
-
 </html>

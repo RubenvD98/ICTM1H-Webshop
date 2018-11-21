@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+include '../Functies/dbConfig.php';
+include '../Functies/Functie.php';
+?>
 <!doctype html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -7,7 +10,6 @@
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/Model.css">
     <script src="../js/bootstrap.min.js"></script>
-    <?php include '../Functies/Functie.php'; ?>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark ">
@@ -43,8 +45,7 @@
                         <li class="nav-item">
                             <form class="form-inline my-2 my-lg-0">
                                 <a class="btn btn-success btn-sm ml-3" href="../Winkelwagen/Winkelwagen.php">
-                                    <i class="fa fa-shopping-cart"></i>Winkelwagen
-                                    <span class="badge badge-light"></span>
+                                    <i class="fa fa-shopping-cart"></i>Winkelwagen<span class="badge badge-light"></span>
                                 </a>
                             </form>
                         </li>
@@ -107,7 +108,7 @@
                 <label for="email"><b>Email</b></label>
                 <input class="signup" type="text" placeholder="Email" name="email" required>
 
-                <label for="wachtwoord"><b>Wacthwoord</b></label>
+                <label for="wachtwoord"><b>Wachtwoord</b></label>
                 <input class="signup" type="password" placeholder="Wacthwoord" name="wachtwoord" required>
 
                 <label for="wachtwoord-repeat"><b>Herhaal Wachtwoord</b></label>
@@ -121,7 +122,7 @@
 
                 <div class="btn-group">
                     <button class="btn btn-danger" type="button" onclick="document.getElementById('signup').style.display = 'none'">Annuleren</button>
-                    <button class="btn btn-success" type="submit">Registeren</button>
+                    <button class="btn btn-success" type="submit">Registreren</button>
                 </div>
             </div>
         </form>
