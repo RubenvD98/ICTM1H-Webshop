@@ -1,6 +1,6 @@
 <?php
 // include database configuration file
-include '../Functie/dbConfig.php';
+include '../Functies/dbConfig.php';
 
 // initializ shopping cart class
 include '../Winkelwagen/Cart.php';
@@ -8,7 +8,7 @@ $cart = new Cart;
 
 // redirect to home if cart is empty
 if($cart->total_items() <= 0){
-    header("Location: ../Categories/Algemeen.php");
+    header("Location: ../Categories/Categories.php");
 }
 
 // set customer ID in session
@@ -17,74 +17,52 @@ $_SESSION['sessCustomerID'] = 1;
 // get customer details by session customer ID
 $query = $db->query("SELECT * FROM klanten WHERE klantenid = ".$_SESSION['sessCustomerID']);
 $custRow = $query->fetch_assoc();
+
+include '../Functies/Functie.php';
+include '../Functies/Layouts.php';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <title>Checkout - PHP Shopping Cart Tutorial</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <?php includeFiles(); ?>
     <style>
-    .container{width: 100%;padding: 50px;}
-    .table{width: 65%;float: left;}
-    .shipAddr{width: 30%;float: left;margin-left: 30px;}
-    .footBtn{width: 95%;float: left;}
-    .orderBtn {float: right;}
+      .ideal {
+        width: 40%;
+        height: 40%;
+        margin-left: 30px;
+      }
     </style>
 </head>
-<body>
-<div class="container">
-    <h1>Order Preview</h1>
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if($cart->total_items() > 0){
-            //get cart items from session
-            $cartItems = $cart->contents();
-            foreach($cartItems as $item){
-        ?>
-        <tr>
-            <td><?php echo $item["name"]; ?></td>
-            <td><?php echo '€'.$item["price"].' EURO'; ?></td>
-            <td><?php echo $item["qty"]; ?></td>
-            <td><?php echo '€'.$item["subtotal"].' EURO'; ?></td>
-        </tr>
-        <?php } }else{ ?>
-        <tr><td colspan="4"><p>No items in your cart......</p></td>
-        <?php } ?>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3"></td>
-            <?php if($cart->total_items() > 0){ ?>
-            <td class="text-center"><strong>Total <?php echo '€'.$cart->total().' EURO'; ?></strong></td>
-            <?php } ?>
-        </tr>
-    </tfoot>
-    </table>
-    <div class="shipAddr">
-        <h4>Shipping Details</h4>
-        <p><?php echo $custRow['naam']; ?></p>
-        <p><?php echo $custRow['email']; ?></p>
-        <p><?php echo $custRow['telefoonnr']; ?></p>
-        <p><?php echo $custRow['adres']; ?></p>
-        <p><?php echo $custRow['postcode']; ?></p>
-        <p><?php echo $custRow['plaats']; ?></p>
+  <body>
+    <div class="container text-center">
+      <img src="../IMG/Ideal.png" class="ideal">
+      <h2>Belangrijk:</h2>
+      <p>Sluit na de iDeal betaling de webwinkel <strong>niet</strong> af en accepteer de melding om verder te gaan.</p>
+      <p>De betaling zal verlopen via Wide World Importers.</p>
+      <h2>Bedrag totaal: <?php echo '€'.$cart->total(); ?></h2>
+      <form>
+        <h2>Kies uw bank:</h2>
+        <div class="form-group">
+          <select class="form-control" id="bank">
+            <option>ABN AMRO</option>
+            <option>ASN BANK</option>
+            <option>bunq</option>
+            <option>ING</option>
+            <option>Knab</option>
+            <option>Moneyou</option>
+            <option selected>Rabobank</option>
+            <option>RegioBank</option>
+            <option>SNS</option>
+            <option>Triodos Bank</option>
+            <option>Van Lanschot</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-secondary">Betalen</button>
+          <a role="button" class="btn btn-secondary" href="../Winkelwagen/Winkelwagen.php">Annuleren</a>
+        </div>
+      </form>
     </div>
-    <div class="footBtn">
-        <a href="../Categories/Algemeen.php" class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Continue Shopping</a>
-        <a href="../Winkelwagen/CartAction.php?action=placeOrder" class="btn btn-success orderBtn">Place Order <i class="glyphicon glyphicon-menu-right"></i></a>
-    </div>
-</div>
-</body>
+  </body>
 </html>

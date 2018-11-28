@@ -1,6 +1,4 @@
 <?php
-include '../Functies/dbConfig.php';
-
 // Ophalen van de artikel namen
 function WaardesOphalen() {
     $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
@@ -23,22 +21,7 @@ function WaardesOphalen() {
     }
     return array($beschrijvingArray, $Array, $prijsArray);
 }
- function login($uname, $psw)
-    {
-                $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
-                $user = "root";
-                $pass = "";
-                $pdo = new PDO($db, $user, $pass);
-            $query = $pdo->prepare("SELECT * FROM klanten");
-            $enc_psw = hash('sha256', $psw);
-            $query->execute();
-            $array = array();
-    while ($row = $query->fetch()) {
-        $gebruikersnaam = $row["gebruikersnaam"];
-        $wachtwoord = $row["gebruikersnaam"];
-    }
-    return $array;
-}
+
 function filterenNaam() {
     /* Variabelen die nodig zijn voor/in de loop */
     $productMaat = ""; //wordt gevuld in de loop
@@ -189,7 +172,7 @@ function artikelenSite() {
                             ?>
                         </div>
                         <div class="col">
-                            <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>">Toevoegen</a>
+                            <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>&aantal=1">Toevoegen</a>
                         </div>
                     </div>
                 </div>
@@ -257,4 +240,89 @@ function zoeken($zoekopdracht) {
     } else {
         print("Geen zoekresultaten gevonden!");
     }
+}
+
+function onclickScript() {
+  ?>
+  // Get the modal
+  var login = document.getElementById('login');
+  var signup = document.getElementById('signup');
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+      if (event.target == login) {
+          login.style.display = "none";
+      }
+      else if (event.target == signup) {
+          signup.style.display = "none";
+      }
+  }
+  <?php
+}
+
+function navigationBar() {
+  ?>
+  function openNav() {
+      document.getElementById("mySidenav").style.width = "300px";
+  }
+
+  function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+  }
+  <?php
+}
+
+/* Functie voor random nummers */
+function randomGen($min, $max, $quantity) {
+    $numbers = range($min, $max);
+    shuffle($numbers);
+    return array_slice($numbers, 0, $quantity);
+}
+
+function register($email, $username, $password)
+    {
+        try {
+            $pdo = new PDO($db, $user, $pass);
+            $query = $db->prepare("INSERT INTO login(email, gebruikersnaam, wachtwoord) VALUES (:email,:username,:password)");
+            $query->bindParam("email", $email, PDO::PARAM_STR);
+            $query->bindParam("username", $username, PDO::PARAM_STR);
+            $query->bindParam("password", $password, PDO::PARAM_STR);
+            $query->execute();
+            return $db->lastInsertId();
+        } catch (PDOException $e) {
+            exit($e->getMessage());
+        }
+    }
+
+     function isUsername($username)
+    {
+        try {
+            $db = DB();
+            $query = $db->prepare("SELECT uid FROM login WHERE uname=:uname");
+            $query->bindParam("uname", $username, PDO::PARAM_STR);
+            $query->execute();
+            if ($query->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            exit($e->getMessage());
+        }
+    }
+
+    function login($username, $password)
+    {
+                $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
+                $user = "root";
+                $pass = "";
+                $pdo = new PDO($db, $user, $pass);
+            $query = $pdo->prepare("SELECT * FROM login");
+            $enc_psw = hash('sha256', $psw);
+            $query->execute();
+            $array = array();
+    while ($row = $query->fetch()) {
+        $gebruikersnaam = $row["gebruikersnaam"];
+        $wachtwoord = $row["gebruikersnaam"];
+    }
+    return $array;
 }

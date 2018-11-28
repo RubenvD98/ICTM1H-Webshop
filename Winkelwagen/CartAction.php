@@ -1,5 +1,4 @@
 <?php
-
 // initialize shopping cart class
 include 'Cart.php';
 $cart = new Cart;
@@ -7,29 +6,29 @@ $cart = new Cart;
 // include database configuration file
 include '../Functies/dbConfig.php';
 if (isset($_REQUEST['action']) && !empty($_REQUEST['action'])) {
-    if ($_REQUEST['action'] == 'addToCart' && !empty($_REQUEST['id'])) {
+    if ($_REQUEST['action'] == 'addToCart' && !empty($_REQUEST['id']) && !empty($_REQUEST['aantal'])) {
         $productID = $_REQUEST['id'];
+        $aantal = $_REQUEST['aantal'];
         // get product details
         $query = $db->query("SELECT * FROM stockitems WHERE StockItemID = " . $productID);
         $row = $query->fetch_assoc();
-        $itemData = array(
+        $itemData = array( //de volgende items worden in een array gezet voor de winkelwagen: StockItemID, StockItemName, RecommendedRetailPrice en aatal
             'id' => $row['StockItemID'],
             'name' => $row['StockItemName'],
             'price' => $row['RecommendedRetailPrice'],
-            'qty' => 1
+            'qty' => $aantal
         );
 
         $insertItem = $cart->insert($itemData);
         $redirectLoc = $insertItem ?  'Winkelwagen.php' : '../Categories/Categories.php';
         header("Location: " . $redirectLoc);
-    } elseif ($_REQUEST['action'] == 'updateCartItem' && !empty($_REQUEST['id'])) {
+    } elseif($_REQUEST['action'] == 'updateCartItem' && !empty($_REQUEST['id'])){
         $itemData = array(
             'rowid' => $_REQUEST['id'],
             'qty' => $_REQUEST['qty']
         );
         $updateItem = $cart->update($itemData);
-        echo $updateItem ? 'ok' : 'err';
-        die;
+        echo $updateItem?'ok':'err';die;
     } elseif ($_REQUEST['action'] == 'removeCartItem' && !empty($_REQUEST['id'])) {
         $deleteItem = $cart->remove($_REQUEST['id']);
         header("Location: Winkelwagen.php");
