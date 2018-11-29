@@ -293,23 +293,6 @@ function register($email, $username, $password)
         }
     }
 
-     function isUsername($username)
-    {
-        try {
-            $db = DB();
-            $query = $db->prepare("SELECT uid FROM login WHERE uname=:uname");
-            $query->bindParam("uname", $username, PDO::PARAM_STR);
-            $query->execute();
-            if ($query->rowCount() > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (PDOException $e) {
-            exit($e->getMessage());
-        }
-    }
-
     function login($username, $password)
     {
                 $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
@@ -317,12 +300,19 @@ function register($email, $username, $password)
                 $pass = "";
                 $pdo = new PDO($db, $user, $pass);
             $query = $pdo->prepare("SELECT * FROM login");
-            $enc_psw = hash('sha256', $psw);
+            $enc_psw = hash('sha256', $pass);
             $query->execute();
             $array = array();
     while ($row = $query->fetch()) {
-        $gebruikersnaam = $row["gebruikersnaam"];
-        $wachtwoord = $row["gebruikersnaam"];
+        $user = $row["gebruikersnaam"];
+        $pass = $row["wachtwoord"];
+        
+        if ($username == $user AND $pass == $password){
+            
+        }
+        else {
+             trigger_error("Oops!", E_USER_ERROR);
+        }
     }
     return $array;
 }
