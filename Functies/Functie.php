@@ -278,21 +278,15 @@ function randomGen($min, $max, $quantity) {
     return array_slice($numbers, 0, $quantity);
 }
 
-function register($email, $username, $password)
+        function register($username, $password, $email)
     {
-        try {
-            $pdo = new PDO($db, $user, $pass);
-            $query = $db->prepare("INSERT INTO login(email, gebruikersnaam, wachtwoord) VALUES (:email,:username,:password)");
-            $query->bindParam("email", $email, PDO::PARAM_STR);
-            $query->bindParam("username", $username, PDO::PARAM_STR);
-            $query->bindParam("password", $password, PDO::PARAM_STR);
+                $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
+                $user = "root";
+                $pass = "";
+                $pdo = new PDO($db, $user, $pass);
+            $query = $pdo->prepare("INSERT INTO login(email, gebruikersnaam, wachtwoord) VALUES ('$email','$username','$password')");
             $query->execute();
-            return $db->lastInsertId();
-        } catch (PDOException $e) {
-            exit($e->getMessage());
-        }
     }
-
     function login($username, $password)
     {
                 $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
