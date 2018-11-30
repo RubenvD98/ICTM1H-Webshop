@@ -1,11 +1,17 @@
 <?php
 include '../Functies/dbConfig.php';
 include '../Functies/Functie.php';
-include '../Functies/Layouts.php';
 ?>
 <!doctype html>
 <head>
-  <?php includeFiles(); ?>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="../js/jqeury-3.3.1.slim.min.js"></script>
+    <script src="../js/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/Model.css">
+    <link rel="stylesheet" href="../css/Sidenav.css">
+    <script src="../js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -72,76 +78,164 @@ include '../Functies/Layouts.php';
     </div>
     <!-- Tabs voor de categorieën -->
     <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <h2>Categorieën</h2>
-        <a href="Algemeen.php">Algemeen</a>
-        <a href="kleren.php">Kleren</a>
-        <a href="Mokken.php">Mokken</a>
-        <a href="USB.php">USB Sticks</a>
-        <a href="pantovels.php">Pantovels</a>
-        <a href="Speelgoed.php">Speelgoed</a>
-        <a href="VerpakingMateriaal.php">Verpaking Materiaal</a>
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <h2>Categorieën</h2>
+      <a href="Algemeen.php">Algemeen</a>
+      <a href="kleren.php">Kleren</a>
+      <a href="Mokken.php">Mokken</a>
+      <a href="USB.php">USB Sticks</a>
+      <a href="pantovels.php">Pantovels</a>
+      <a href="Speelgoed.php">Speelgoed</a>
+      <a href="VerpakingMateriaal.php">Verpaking Materiaal</a>
     </div>
-    <div class="sidenavposition">
-        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Categorieën</span>
+    <div class="sticky-top sidenavposition">
+      <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Categorieën</span>
     </div>
     <br><br><br>
 
     <div class="container-fluid">
-        <!-- Het laten zien van de producten -->
-        <div class="row">
-            <?php
-            $query = $db->query("SELECT * FROM stockItems WHERE StockItemID IN(SELECT StockItemID FROM stockitemstockgroups WHERE StockGroupID = 8) ORDER BY StockItemID");
-            if ($query->num_rows > 0) {
-                while ($row = $query->fetch_assoc()) {
-                    ?>
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card">
-                          <form action="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $row["StockItemID"]; ?>&aantal=<?php filter_input(INPUT_POST, 'aantal', FILTER_SANITIZE_STRING); ?>" method="post">
-                            <img class="card-img-top" src="../IMG/chocolade.jpg" alt="Card image cap">
-                            <div class="card-body">
-                                <h4 class="card-title"><a href="../Product/Product.php?id=<?php echo $row["StockItemID"]; ?>" title="View Product"><?php echo $row["StockItemName"]; ?></a></h4>
-                                <p class="card-text"><?php echo $row["SearchDetails"]; ?></p>
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="btn btn-danger btn-block"><?php echo '€' . $row["RecommendedRetailPrice"]; ?></p>
-                                    </div>
-                                    <div class="col">
-                                        <input type="number" min="1" max="100" class="form-control text-center" value="1" name="aantal">
-                                    </div>
-                                    <div class="col">
-                                        <input type="submit" name="Toevoegen" value="Toevoegen" class="btn btn-success btn-block">
-                                    </div>
-                                </div>
-                            </div>
-                          </form>
-                        </div>
-                    </div>
-                <?php }
-            }
-            else { ?>}
-                <p>Geen zoekresultaten gevonden!</p>
-<?php } ?>
-        </div>
+            <!-- Het laten zien van de producten -->
+          <div class="row">
+              <?php
+              categorie(8);
+              ?>
+            </div>
         <br>
     </div>
 
-    <?php
-    /* Modal login Content */
-    ModalLogin();
+    <!-- The Modal login -->
+    <div id="login" class="modal">
+        <span onclick="document.getElementById('login').style.display = 'none'" class="close-model" title="Close Modal login">&times;</span>
 
-    /* Modal signup Content */
-    ModalSignup();
+        <!-- Modal login Content -->
+        <form class="modal-border modal-content animate" action="/action_page.php">
+            <div class="imgcontainer">
+                <img src="../IMG/avatar.png" alt="Avatar" class="avatar">
+            </div>
 
-    /* Laat de footer zien */
-    Footer();
-    ?>
+            <div class="container-login">
+                <label for="uname"><b>Gebruikersnaam</b></label>
+                <input class="login" type="text" placeholder="Gebruikersnaam" name="uname" required>
+
+                <label for="psw"><b>Wachtwoord</b></label>
+                <input class="login" type="password" placeholder="Wachtwoord" name="psw" required>
+
+                <button class="btn btn-success loginbtn" type="submit">Inloggen</button>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember"> Onthouden
+                </label>
+            </div>
+
+            <div class="container-login" style="background-color:#f1f1f1">
+                <button type="button" class="btn btn-danger" onclick="document.getElementById('login').style.display = 'none'">Annuleren</button>
+                <span class="psw"><a href="#">Wachtwoord vergeten?</a></span>
+            </div>
+        </form>
+    </div>
+    <!-- The Modal signup -->
+    <div id="signup" class="modal">
+        <span onclick="document.getElementById('signup').style.display = 'none'" class="close-model" title="Close Modal signup">&times;</span>
+
+        <form class="modal-content model-border animate" action="/action_page.php">
+            <div class="container-login">
+                <h1>Registeren</h1>
+                <p>Please fill in this form to create an account.</p>
+                <hr>
+                <label for="gebruikersnaam"><b>Gebruikersnaam</b></label>
+                <input class="signup" type="text" placeholder="Gebruikersnaam" name="gebruikersnaam" required>
+
+                <label for="email"><b>Email</b></label>
+                <input class="signup" type="text" placeholder="Email" name="email" required>
+
+                <label for="wachtwoord"><b>Wachtwoord</b></label>
+                <input class="signup" type="password" placeholder="Wacthwoord" name="wachtwoord" required>
+
+                <label for="wachtwoord-repeat"><b>Herhaal Wachtwoord</b></label>
+                <input class="signup" type="password" placeholder="Herhaal Wachtwoord" name="wachtwoord-repeat" required>
+
+                <label>
+                    <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Onthouden
+                </label>
+
+                <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+
+                <div class="btn-group">
+                    <button class="btn btn-danger" type="button" onclick="document.getElementById('signup').style.display = 'none'">Annuleren</button>
+                    <button class="btn btn-success" type="submit">Registreren</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-light bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-lg-4 col-xl-3">
+                    <h5>About</h5>
+                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                    <p class="mb-0">
+                        Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.
+                    </p>
+                </div>
+
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto">
+                    <h5>Informations</h5>
+                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                    <ul class="list-unstyled">
+                        <li><a href="">Link 1</a></li>
+                        <li><a href="">Link 2</a></li>
+                        <li><a href="">Link 3</a></li>
+                        <li><a href="">Link 4</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto">
+                    <h5>Others links</h5>
+                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                    <ul class="list-unstyled">
+                        <li><a href="">Link 1</a></li>
+                        <li><a href="">Link 2</a></li>
+                        <li><a href="">Link 3</a></li>
+                        <li><a href="">Link 4</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-xl-3">
+                    <h5>Contact</h5>
+                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-home mr-2"></i> My company</li>
+                        <li><i class="fa fa-envelope mr-2"></i> email@example.com</li>
+                        <li><i class="fa fa-phone mr-2"></i> + 33 12 14 15 16</li>
+                        <li><i class="fa fa-print mr-2"></i> + 33 12 14 15 16</li>
+                    </ul>
+                </div>
+                <div class="col-12 copyright mt-3">
+                    <p class="float-left">
+                        <a href="#">Back to top</a>
+                    </p>
+                    <p class="text-right text-muted">created with <i class="fa fa-heart"></i> by <a href="https://t-php.fr/43-theme-ecommerce-bootstrap-4.php"><i>t-php</i></a> | <span>v. 1.0</span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
-    <?php
-    navigationBar();
-    onclickScript();
-     ?>
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "300px";
+    }
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+        // Get the modal
+        var modal = document.getElementById('login');
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 
