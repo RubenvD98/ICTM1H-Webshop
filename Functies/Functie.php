@@ -332,35 +332,39 @@ function randomGen($min, $max, $quantity) {
     return array_slice($numbers, 0, $quantity);
 }
 
-        function register($username, $password, $email)
+        function register($username, $password, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr)
     {
                 $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
                 $user = "root";
                 $pass = "";
                 $pdo = new PDO($db, $user, $pass);
-            $query = $pdo->prepare("INSERT INTO login(email, gebruikersnaam, wachtwoord) VALUES ('$email','$username','$password')");
+            $query = $pdo->prepare("INSERT INTO klantenaccount(email, gebruikersnaam, wachtwoord) VALUES ('$email','$username','$password')");
             $query->execute();
-    }
+            $query2 = $pdo->prepare("INSERT INTO klantenadres(adres, plaats, postcode, huisnummer, toevoeging) VALUES ('$adres','$plaats','$postcode, '$huisnummer', '$toevoeging')");
+            $query2->execute();
+            $query3 = $pdo->prepare("INSERT INTO klanten(voornaam, tussenvoegsel, achternaam, telefoonnr) VALUES ('$voornaam','$tussenvoegsel','$achternaam', '$telefoonnr')");
+            $query3->execute();
+            }
+
+    
     function login($username, $password)
     {
                 $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
                 $user = "root";
                 $pass = "";
                 $pdo = new PDO($db, $user, $pass);
-            $query = $pdo->prepare("SELECT * FROM login");
+            $query = $pdo->prepare("SELECT * FROM klantenaccount");
             $enc_psw = hash('sha256', $pass);
             $query->execute();
             $array = array();
     while ($row = $query->fetch()) {
-        $user = $row["gebruikersnaam"];
-        $pass = $row["wachtwoord"];
+        $user = $row["Gebruikersnaam"];
+        $pass = $row["Wachtwoord"];
         
         if ($username == $user AND $pass == $password){
             
         }
         else {
-             trigger_error("Oops!", E_USER_ERROR);
+
         }
     }
-    return $array;
-}
