@@ -54,23 +54,65 @@ function ModalSignup() {
   <div id="signup" class="modal">
       <span onclick="document.getElementById('signup').style.display = 'none'" class="close-model" title="Close Modal signup">&times;</span>
 
-      <form class="modal-content model-border animate" action="/action_page.php">
+           <form class="modal-content model-border animate form-horizontal" method="get" action="#">
           <div class="container-login">
               <h1>Registeren</h1>
               <p>Please fill in this form to create an account.</p>
               <hr>
-              <label for="gebruikersnaam"><b>Gebruikersnaam</b></label>
-              <input class="signup" type="text" placeholder="Gebruikersnaam" name="gebruikersnaam" required>
-
-              <label for="email"><b>Email</b></label>
-              <input class="signup" type="text" placeholder="Email" name="email" required>
-
-              <label for="wachtwoord"><b>Wachtwoord</b></label>
-              <input class="signup" type="password" placeholder="Wacthwoord" name="wachtwoord" required>
-
-              <label for="wachtwoord-repeat"><b>Herhaal Wachtwoord</b></label>
-              <input class="signup" type="password" placeholder="Herhaal Wachtwoord" name="wachtwoord-repeat" required>
-
+              <div class="form-group">
+                <label for="gebruikersnaam"><b>Gebruikersnaam</b></label>
+                <input class="form-control" type="text" id="gebruikersnaam" placeholder="Gebruikersnaam  *" name="gebruikersnaam" required>
+              </div>
+              <div class="form-group">
+                <label for="email"><b>Email</b></label>
+                <input class="form-control" type="email" id="email" placeholder="Email *" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="wachtwoord"><b>Wachtwoord</b></label>
+                <input class="form-control" type="password" id="Wachtwoord" placeholder="Wachtwoord  *" name="wachtwoord" required>
+              </div>
+              <div class="form-group">
+                <label for="wachtwoord-repeat"><b>Herhaal Wachtwoord</b></label>
+                <input class="form-control" type="password" id="herhaal-Wachtwoord" placeholder="Herhaal Wachtwoord *" name="Wachtwoord-repeat" required>
+              </div>
+              <label for="Naam"><b>Naam</b></label>
+              <div class="form-row">
+                <div class="form-group col-md-8">
+                  <input type="text" class="form-control" id="voornaam" name="voornaam" placeholder="Voornaam *" required>
+                </div>
+                <div class="form-group col-md-4">
+                  <input type="text" class="form-control" id="tussenvoegsel" name="tussenvoegsel" placeholder="Tussenvoegsel">
+                </div>
+              </div>
+              <div class="form-group">
+                  <input type="text" class="form-control" id="achternaam" name="achternaam" placeholder="Achternaam *" required>
+              </div>
+              <div class="form-group">
+                <label for="telefoonnr"><b>Telefoon nummer:</b></label>
+                <input type="tel" class="form-control" id="telefoonnr" name="telefoonnr" placeholder="Telefoon nummer">
+              </div>
+              <div>
+                <label><b>Adress:</b></strong></label>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <input type="text" class="form-control" id="postcode" name="postcode" placeholder="Postcode *" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control" id="huisnummer" name="huisnummer" placeholder="Huisnummer *" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control" id="toevoeging" name="toevoeging" placeholder="Toevoeging">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <input type="text" class="form-control" id="adres" name="adres" placeholder="Adres *" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <input type="text" class="form-control" id="plaats" name="plaats" placeholder="Plaats *" required>
+                </div>
+              </div>
               <label>
                   <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Onthouden
               </label>
