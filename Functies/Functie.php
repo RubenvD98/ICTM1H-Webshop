@@ -25,7 +25,7 @@ function filterenZonderOpslaan($array){
     $beschikbareMaten = array("3XS", "XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL");
     $beschikbareKleuren = array("(White)", "(Black)", "(Green)", "(Gray)", "(Light Brown)", "(Blue)", "(Brown)", "(Yellow)");
     $filterArray = array();
-    
+
     foreach ($array as $id => $product) {
         //maat
         if (in_array(substr($product, - 3), $beschikbareMaten)) {
@@ -50,13 +50,11 @@ function filterenZonderOpslaan($array){
 }
     return $filterArray;
 }
-
 function beschrijving() {
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
     $beschikbareMaten = array("3XS", "XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL");
     $beschrijvingFilter = array();
     $beschikbareKleuren = array("(White)", "(Black)", "(Green)", "(Gray)", "(Light Brown)", "(Blue)", "(Brown)", "(Yellow)");
-
     foreach ($beschrijvingArray as $key => $beschrijving) {
         // Maat
         $beschrijving = trim($beschrijving);
@@ -67,20 +65,18 @@ function beschrijving() {
         } elseif (in_array(substr($beschrijving, -1), $beschikbareMaten)) {
             $beschrijving = substr($beschrijving, 0, -1);
         }
-        
+
         // Kleur
         foreach($beschikbareKleuren as $kleur){
             if(strpos($beschrijving, $kleur) !== FALSE) {
                 $beschrijving = str_replace($kleur, "", $beschrijving);
             }
         }
-        
 
         $beschrijvingFilter[$key] = $beschrijving;
     }
     return $beschrijvingFilter;
 }
-
 function filterenNaam() {
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
     $beschikbareMaten = array("3XS", "XXS", "XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "7XL");
@@ -93,7 +89,6 @@ function filterenNaam() {
     $naamMaatArray = array(); // Hier worden de maatArrays per product opgeslagen
     $naamKleurArray = array(); // Hier worden de KleurArrays per product opgeslagen
     $productnamen = array(); // Hier worden de productnamen opgeslagen
-
     foreach ($artikelArray as $id => $product) {
         //maat
         if (in_array(substr($product, - 3), $beschikbareMaten)) {
@@ -116,7 +111,6 @@ function filterenNaam() {
                 $product = str_replace($kleur, "", $product);
             }
         }
-
         if ($product === $vorigProduct) {
             if (in_array($productKleur, $productKleuren) === FALSE) {
                 $productKleuren[$id] = $productKleur;
@@ -134,17 +128,14 @@ function filterenNaam() {
         }
         $naamKleurArray[$product] = $productKleuren;
         $naamMaatArray[$product] = $productMaten;
-
         if (in_array($product, $productnamen) === FALSE) {
             $productnamen[$id] = $product;
         }
-
         $vorigProduct = $product;
     }
     //return array($productNamen, $naamMaatArray, $naamKleurArray);
     return array($productnamen, $naamMaatArray, $naamKleurArray);
 }
-
 function filterenBeschrijving() {
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
     $kleurArray = array("(White)", "(Black)", "(Green)", "(Gray)");
@@ -163,21 +154,19 @@ function filterenBeschrijving() {
         }
     }
         $filterArray = array();
-
         foreach ($filterMaatArray as $id => $beschrijving) {
             $beschrijving = str_replace($kleurArray, "", $beschrijving);
             if (in_array($beschrijving, $filterArray) == false) {
                 $filterArray[$id] = $beschrijving;
             }
         }
-
     return $filterMaatArray;
 }
 function artikelenSite() {
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
     list($filterNaamArray, $naamMaatArray) = filterenNaam();
     $beschrijvingFilterArray = beschrijving();
-    
+
     foreach ($filterNaamArray as $id => $product) {
         ?>
         <div class="col-12 col-md-6 col-lg-4">
@@ -214,7 +203,6 @@ function artikelenSite() {
         <?php
     }
 }
-
 function zoeken($zoekopdracht) {
     list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
     list($filterNaamArray, $naamMaatArray) = filterenNaam();
@@ -229,7 +217,7 @@ function zoeken($zoekopdracht) {
     } else {
         foreach ($filterNaamArray as $id => $artikel) {
             $artikel = strtolower($artikel);
-            /* de artikel moet ook in kleine letters zijn op het te kunnen 
+            /* de artikel moet ook in kleine letters zijn op het te kunnen
              * vergelijken met strpos(). */
             if (strpos($artikel, $zoekopdracht) !== FALSE) {
                 /* Hier wordt de zoekopdracht vergeleken met het artikel */
@@ -241,7 +229,7 @@ function zoeken($zoekopdracht) {
              */
         }
         if (empty($zoekopdrachtArray) === FALSE) {
-            /* Er wordt gekeken of de zoekopdrachtenArray leeg is zodat er een 
+            /* Er wordt gekeken of de zoekopdrachtenArray leeg is zodat er een
              * foutmelding weergegeven kan worden als er geen zoekresultaten zijn */
             foreach ($zoekopdrachtArray as $id => $product) {
                 /* De zoekopdrachten worden doorgelopen en weergegeven op de site */
@@ -312,7 +300,6 @@ function onclickScript() {
   }
   <?php
 }
-
 function navigationBar() {
   ?>
   function openNav() {
@@ -324,7 +311,6 @@ function navigationBar() {
   }
   <?php
 }
-
 /* Functie voor random nummers */
 function randomGen($min, $max, $quantity) {
     $numbers = range($min, $max);
@@ -332,39 +318,41 @@ function randomGen($min, $max, $quantity) {
     return array_slice($numbers, 0, $quantity);
 }
 
-        function register($username, $password, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr)
-    {
-                $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
-                $user = "root";
-                $pass = "";
-                $pdo = new PDO($db, $user, $pass);
-            $query = $pdo->prepare("INSERT INTO klantenaccount(email, gebruikersnaam, wachtwoord) VALUES ('$email','$username','$password')");
-            $query->execute();
-            $query2 = $pdo->prepare("INSERT INTO klantenadres(adres, plaats, postcode, huisnummer, toevoeging) VALUES ('$adres','$plaats','$postcode, '$huisnummer', '$toevoeging')");
-            $query2->execute();
-            $query3 = $pdo->prepare("INSERT INTO klanten(voornaam, tussenvoegsel, achternaam, telefoonnr) VALUES ('$voornaam','$tussenvoegsel','$achternaam', '$telefoonnr')");
-            $query3->execute();
-            }
 
-    
-    function login($username, $password)
-    {
+function login($username, $password){
                 $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
                 $user = "root";
                 $pass = "";
                 $pdo = new PDO($db, $user, $pass);
-            $query = $pdo->prepare("SELECT * FROM klantenaccount");
-            $enc_psw = hash('sha256', $pass);
+            $query = $pdo->prepare("SELECT * FROM Klantenaccount where Gebruikersnaam = '$username'");
+            $enc_psw = hash('sha256', $password);
             $query->execute();
             $array = array();
     while ($row = $query->fetch()) {
-        $user = $row["Gebruikersnaam"];
+        $gebruikersnaam = $row["Gebruikersnaam"];
         $pass = $row["Wachtwoord"];
-        
-        if ($username == $user AND $pass == $password){
-            
+        $id = $row["KlantenID"];
+
+        if ($username == $gebruikersnaam AND $pass == $enc_psw){
+          echo "#?" . $id;
         }
         else {
-
+          echo "#?Not" ;
         }
+    }
+    return $array;
+}
+
+function register($username, $password, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr){
+                $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
+                $user = "root";
+                $pass = "";
+                $pdo = new PDO($db, $user, $pass);
+            $enc_psw = hash('sha256', $password);
+            $query = $pdo->prepare("INSERT INTO Klantenaccount(Email, Gebruikersnaam, Wachtwoord) VALUES ('$email','$username','$enc_psw')");
+            $query->execute();
+            $query2 = $pdo->prepare("INSERT INTO Klanten(Voornaam, Tussenvoegsel, Achternaam, Telefoonnr ) VALUES ('$voornaam','$tussenvoegsel','$achternaam', '$telefoonnr')");
+            $query2->execute();
+            $query3 = $pdo->prepare("INSERT INTO Klantenadres(Adres, Postcode, Plaats, Huisnummer, Toevoeging) VALUES ('$adres','$plaats','$postcode', '$huisnummer', '$toevoeging')");
+            $query3->execute();
     }
