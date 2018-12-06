@@ -326,7 +326,7 @@ function randomGen($min, $max, $quantity) {
     return array_slice($numbers, 0, $quantity);
 }
 
-
+// inlog functie
 function login($username, $password){
             include '../Functies/dbConfig.php';
             $query = $pdo->prepare("SELECT * FROM Klantenaccount where Gebruikersnaam = ?");
@@ -338,7 +338,7 @@ function login($username, $password){
         $gebruikersnaam = $row["Gebruikersnaam"];
         $pass = $row["Wachtwoord"];
         $id = $row["KlantenID"];
-
+//verificatie
         if ($username == $gebruikersnaam AND $pass == $enc_psw){
           echo "#?" . $id;
         }
@@ -348,7 +348,7 @@ function login($username, $password){
     }
     return $array;
 }
-
+//register incl hashed password
 function register($username, $password, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr){
             include '../Functies/dbConfig.php';
             $enc_psw = hash('sha256', $password);
