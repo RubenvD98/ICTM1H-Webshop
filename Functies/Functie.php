@@ -332,7 +332,7 @@ function login($username, $password){
         $pass2 = $row["Wachtwoord"];
         $id = $row["KlantenID"];
         if ($username == $gebruikersnaam AND $pass2 == $enc_psw){
-                      print ("Je bent ingelogd!");
+                       trigger_error("Je bent ingelogd!", E_USER_NOTICE);
         }
         else {
         }
