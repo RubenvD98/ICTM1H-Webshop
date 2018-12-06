@@ -148,7 +148,7 @@ $id = $_GET['id'];
                                 <dl class="param param-inline">
                                     <dt>Hoeveelheid: </dt>
                                     <dd>
-                                        <input type="number" min="1" class="form-control text-center" value="1" name="aantal">
+                                        <input type="number" min="1" class="form-control text-center" value="1" name="aantal" required >
                                     </dd>
                                 </dl>  <!-- item-property .// -->
                             </div> <!-- col.// -->
