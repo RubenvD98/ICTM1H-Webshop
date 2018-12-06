@@ -203,9 +203,9 @@ function categorieën($Categorie) {
       <div class="row">
           <?php
           include '../Functies/dbConfig.php';
-          $query = $db->query("SELECT * FROM stockItems WHERE StockItemID IN(SELECT StockItemID FROM stockitemstockgroups WHERE StockGroupID = $Categorie) ORDER BY StockItemID");
-          if ($query->num_rows > 0) {
-              while ($row = $query->fetch_assoc()) {
+          $query = $pdo->prepare("SELECT * FROM stockItems WHERE StockItemID IN(SELECT StockItemID FROM stockitemstockgroups WHERE StockGroupID = ?) ORDER BY StockItemID");
+          $query->execute(array($Categorie));
+          while ($row = $query->fetch()) {
                   ?>
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card">
@@ -229,12 +229,7 @@ function categorieën($Categorie) {
                           </form>
                         </div>
                     </div>
-              <?php }
-          }
-          else {
-              ?>}
-              <p>Geen zoekresultaten gevonden!</p>
-            <?php } ?>
+              <?php }  ?>
       </div>
       <br>
   </div>

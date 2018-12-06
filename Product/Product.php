@@ -6,7 +6,8 @@ $id = $_GET['id'];
 ?>
 <!doctype html>
 <head>
-    <?php includeFiles(); 
+    <?php
+    includeFiles();
     list($filterNaamArray, $naamMaatArray, $naamKleurArray) = filterenNaam();
     ?>
     <style>
@@ -74,7 +75,7 @@ $id = $_GET['id'];
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="../Home/Home.php">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="Winkelwagen.php">Producten</a></li>
+                        <li class="breadcrumb-item"><a href="../Categories/Categories.php">Producten</a></li>
                     </ol>
                 </nav>
             </div>
@@ -98,7 +99,6 @@ $id = $_GET['id'];
                     <article class="card-body p-5">
                         <h3 class="title mb-3">
                             <?php
-                            
                             $artikelNaam = "";
                             foreach ($filterNaamArray as $key => $artikel) {
                                 if ($key == $id) {
@@ -142,37 +142,9 @@ $id = $_GET['id'];
                             <dd>Nederland</dd>
                         </dl>  <!-- item-property-hor .// -->
                         <!-- item-property-hor .// -->
-                        <dl class="param param-feature">
-                            <dt>Kleur</dt>
-                            <?php
-                            /* De array naamKleur moet worden doorgelopen */
-                            foreach ($naamKleurArray as $productNaam => $kleurArray) {
-                                /* Het artikel van de pagina moet worden vergeleken met het artikel dat in de array staat */
-
-                                if ($productNaam === $artikelNaam) {
-                                    /* Nu moet de kleurArray worden doorgelopen */
-                                    ?> <select> <?php
-                                        foreach ($kleurArray as $key => $kleur) {
-                                            $kleur = trim(str_replace(")", "", $kleur));
-                                            $kleur = trim(str_replace("(", "", $kleur));
-                                            if (empty($kleur) === FALSE) {
-                                                ?>
-                                                <!-- Er wordt een select aangemaakt met daarin de beschikbare kleuren voor het product-->
-
-                                                <option value="<?php print($kleur); ?>"><?php print($kleur); ?></option>
-
-                                                <?php
-                                            }
-                                        }
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </dl>  <!-- item-property-hor .// -->
-
                         <hr>
                         <div class="row">
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <dl class="param param-inline">
                                     <dt>Hoeveelheid: </dt>
                                     <dd>
@@ -180,52 +152,79 @@ $id = $_GET['id'];
                                     </dd>
                                 </dl>  <!-- item-property .// -->
                             </div> <!-- col.// -->
-                            <div class="col-sm-7">
+                            <div class="col-sm-4">
+                              <dl class="param param-feature">
+                                  <dt>Kleur</dt>
+                                  <?php
+                                  /* De array naamKleur moet worden doorgelopen */
+                                  foreach ($naamKleurArray as $productNaam => $kleurArray) {
+                                      /* Het artikel van de pagina moet worden vergeleken met het artikel dat in de array staat */
+                                      if ($productNaam === $artikelNaam) {
+                                          /* Nu moet de kleurArray worden doorgelopen */
+                                          ?> <select name="kleur" class="form-control"> <?php
+                                          foreach ($kleurArray as $key => $kleur) {
+                                              $kleur = trim(str_replace(")", "", $kleur));
+                                              $kleur = trim(str_replace("(", "", $kleur));
+                                              if (empty($kleur) === FALSE) {
+                                                  ?>
+                                                      <!-- Er wordt een select aangemaakt met daarin de beschikbare kleuren voor het product-->
+
+                                                      <option value="<?php print($kleur); ?>"><?php print($kleur); ?></option>
+
+                                                      <?php
+                                                  }
+                                              }
+                                          }
+                                      }
+                                      ?>
+                                  </select>
+                              </dl>  <!-- item-property-hor .// -->
+                            </div>
+                            <div class="col-sm-4">
                                 <dl class="param param-inline">
                                     <?php
-                                $aantalMaten = 0;
+                                    $aantalMaten = 0;
                                     foreach ($naamMaatArray as $productNaam => $maatArray) {
                                         /* Het artikel van de pagina moet worden vergeleken met het artikel dat in de array staat */
-                                      
-                                            if ($productNaam === $artikelNaam) {
+
+                                        if ($productNaam === $artikelNaam) {
                                             /* Nu moet de maatArray worden doorgelopen */
                                             foreach ($maatArray as $key => $maat) {
-                                                $aantalMaten = $aantalMaten + 1 ;
-                                            }
-                                            }
-                                        }
-                                if($aantalMaten - 1 !== 0){
-                                ?>
-                                <dt>Maat: </dt>
-                                <dd>
-                                    <?php
-                                    /* De array naamMaat moet worden doorgelopen */
-                                    foreach ($naamMaatArray as $productNaam => $maatArray) {
-                                        /* Het artikel van de pagina moet worden vergeleken met het artikel dat in de array staat */
-                                      
-                                            if ($productNaam === $artikelNaam) {
-                                            /* Nu moet de maatArray worden doorgelopen */
-                                            foreach ($maatArray as $key => $maat) {
-                                                if(empty($maat) === FALSE){
-                                                ?>
-                                                <!-- Er worden radiobuttons aangemaakt met daarin de maat-->
-                                                <label class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="id" id="inlineRadio" value="<?php print($key)?>">
-                                                    <span class="form-check-label"><?php print($maat); ?></span>
-                                                </label>
-                                                <?php
-                                            }
+                                                $aantalMaten = $aantalMaten + 1;
                                             }
                                         }
-                                        
                                     }
-                                } else {
-                                    ?>
-                                                <input type="text" name="id" value="<?php print($id); ?>" hidden>            
-                                    <?php
-                                }
-                                    ?>                                
-                                </dd>
+                                    if ($aantalMaten - 1 !== 0) {
+                                        ?>
+                                        <dt>Maat: </dt>
+                                        <dd>
+                                          <select name="id" class="form-control">
+                                            <?php
+                                            /* De array naamMaat moet worden doorgelopen */
+                                            foreach ($naamMaatArray as $productNaam => $maatArray) {
+                                                /* Het artikel van de pagina moet worden vergeleken met het artikel dat in de array staat */
+
+                                                if ($productNaam === $artikelNaam) {
+                                                    /* Nu moet de maatArray worden doorgelopen */
+                                                    foreach ($maatArray as $key => $maat) {
+                                                        if (empty($maat) === FALSE) {
+                                                            ?>
+                                                            <!-- Er worden radiobuttons aangemaakt met daarin de maat-->
+                                                            <option value="<?php print $key; ?>"><?php print($maat); ?></option>
+                                                            <?php
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            ?>
+                                            <input type="text" name="id" value="<?php print($id); ?>" hidden>
+                                            <?php
+                                        }
+                                        ?>
+                                      </select>
+                                    </dd>
                                 </dl>  <!-- item-property .// -->
                             </div> <!-- col.// -->
 
@@ -237,7 +236,7 @@ $id = $_GET['id'];
             </div> <!-- row.// -->
         </div> <!-- card.// -->
     </form>
-<?php
+    <?php
     /* Modal login Content */
     ModalLogin();
 
@@ -248,30 +247,10 @@ $id = $_GET['id'];
     Footer();
     ?>
 
-    <?php
-    $uname = filter_input(INPUT_GET, "gebruikersnaam", FILTER_SANITIZE_STRING);
-    $psw = filter_input(INPUT_GET, "wachtwoord", FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_STRING);
-    $adres = filter_input(INPUT_GET, "adres", FILTER_SANITIZE_STRING);
-    $plaats = filter_input(INPUT_GET, "plaats", FILTER_SANITIZE_STRING);
-    $postcode = filter_input(INPUT_GET, "postcode", FILTER_SANITIZE_STRING);
-    $huisnummer = filter_input(INPUT_GET, "huisnummer", FILTER_SANITIZE_STRING);
-    $toevoeging = filter_input(INPUT_GET, "toevoeging", FILTER_SANITIZE_STRING);
-    $voornaam = filter_input(INPUT_GET, "voornaam", FILTER_SANITIZE_STRING);
-    $tussenvoegsel = filter_input(INPUT_GET, "tussenvoegsel", FILTER_SANITIZE_STRING);
-    $achternaam = filter_input(INPUT_GET, "achternaam", FILTER_SANITIZE_STRING);
-    $telefoonnr = filter_input(INPUT_GET, "telefoonnr", FILTER_SANITIZE_STRING);
-
-    register($uname, $psw, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr);
-
-    $username = filter_input(INPUT_GET, "uname", FILTER_SANITIZE_STRING);
-    $password = filter_input(INPUT_GET, "psw", FILTER_SANITIZE_STRING);
-    login($username, $password);
-    ?>
-
-
     <script>
-        onclickScript();
+    <?php
+onclickScript();
+     ?>        
     </script>
 </body>
 </html>

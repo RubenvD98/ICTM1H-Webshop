@@ -5,14 +5,14 @@ include '../Functies/Layouts.php';
 ?>
 <!doctype html>
 <head>
-  <?php includeFiles(); ?>
+    <?php includeFiles(); ?>
     <style>
-    footer {
-        position:absolute;
-        bottom:0;
-        width:100%;
-        height: 170px;   /* Height of the footer */
-    }
+        footer {
+            position:absolute;
+            bottom:0;
+            width:100%;
+            height: 170px;   /* Height of the footer */
+        }
     </style>
 </head>
 <body>
@@ -111,31 +111,8 @@ include '../Functies/Layouts.php';
         </div>
     </section>
 
-          <?php
-    $uname = filter_input(INPUT_GET, "gebruikersnaam", FILTER_SANITIZE_STRING);
-    $psw = filter_input(INPUT_GET, "wachtwoord", FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_STRING);
-    $adres = filter_input(INPUT_GET, "adres", FILTER_SANITIZE_STRING);
-    $plaats = filter_input(INPUT_GET, "plaats", FILTER_SANITIZE_STRING);
-    $postcode = filter_input(INPUT_GET, "postcode", FILTER_SANITIZE_STRING);
-    $huisnummer = filter_input(INPUT_GET, "huisnummer", FILTER_SANITIZE_STRING);
-    $toevoeging = filter_input(INPUT_GET, "toevoeging", FILTER_SANITIZE_STRING);
-    $voornaam=  filter_input(INPUT_GET, "voornaam", FILTER_SANITIZE_STRING);
-    $tussenvoegsel = filter_input(INPUT_GET, "tussenvoegsel", FILTER_SANITIZE_STRING);
-    $achternaam = filter_input(INPUT_GET, "achternaam", FILTER_SANITIZE_STRING);
-    $telefoonnr = filter_input(INPUT_GET, "telefoonnr", FILTER_SANITIZE_STRING);
-    
-    register($uname, $psw, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr);
-    
-    $username = filter_input(INPUT_GET, "uname", FILTER_SANITIZE_STRING);
-    $password = filter_input(INPUT_GET, "psw", FILTER_SANITIZE_STRING);
-    login ($username, $password); 
-    
-
-            ?>
-    
-  
     <?php
+    /* De volgende functies zijn te vinden in de map Functies/layout.php */
     /* Modal login Content */
     ModalLogin();
 
@@ -147,9 +124,10 @@ include '../Functies/Layouts.php';
     ?>
 
     <script>
-    <?php
-    onclickScript();
-     ?>
+<?php
+/* De volgende functies zijn te vinden in de map Functies/Functies.php */
+onclickScript();
+?>
     </script>
 
 </body>

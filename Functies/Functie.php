@@ -1,4 +1,5 @@
 <?php
+include '../Functies/dbConfig.php';
 // Ophalen van de artikel namen
 function WaardesOphalen() {
     $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
@@ -181,22 +182,26 @@ function artikelenSite() {
                         }
                     }
                     ?>
-                    <div class="row">
-                        <div class="col">
-                            <?php
-                            foreach ($prijsArray as $key => $prijs) {
-                                if ($id == $key) {
-                                    ?>
-                                    <p class="btn btn-danger btn-block"> <?php print("€" . $prijs); ?></p>
-                                    <?php
-                                }
-                            }
-                            ?>
-                        </div>
-                        <div class="col">
-                            <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>">Toevoegen</a>
-                        </div>
-                    </div>
+                </div>
+                <div class="card-footer">
+                  <div class="row">
+                      <div class="col">
+                          <?php
+                          foreach ($prijsArray as $key => $prijs) { // De prijs wordt weergegeven
+                              if ($id == $key) { // Er moet worden nagegaan of het id van het product gelijk is aan het id van de zoekopdracht zodat de juiste prijs wordt weergegeven.
+                                  ?>
+                                  <p class="btn btn-danger btn-block"> <?php print("€" . $prijs); ?></p>
+                                  <?php
+                              }
+                          }
+                          ?>
+                      </div>
+                      <div class="col">
+                          <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>&aantal=">Toevoegen</a>
+                          <!-- Hier wordt de waarde id aan de knop om naar de winkelwagen toe te gaan meegegeven om het juiste product in de winkelwagen
+                           te zetten. -->
+                      </div>
+                  </div>
                 </div>
             </div>
         </div>
@@ -256,24 +261,27 @@ function zoeken($zoekopdracht) {
                                 }
                             }
                             ?>
-                            <div class="row">
-                                <div class="col">
-                                    <?php
-                                    foreach ($prijsArray as $key => $prijs) { // De prijs wordt weergegeven
-                                        if ($id == $key) { // Er moet worden nagegaan of het id van het product gelijk is aan het id van de zoekopdracht zodat de juiste prijs wordt weergegeven.
-                                            ?>
-                                            <p class="btn btn-danger btn-block"> <?php print("€" . $prijs); ?></p>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                                <div class="col">
-                                    <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>">Toevoegen</a>
-                                    <!-- Hier wordt de waarde id aan de knop om naar de winkelwagen toe te gaan meegegeven om het juiste product in de winkelwagen
-                                     te zetten. -->
-                                </div>
-                            </div>
+
+                        </div>
+                        <div class="card-footer">
+                          <div class="row">
+                              <div class="col">
+                                  <?php
+                                  foreach ($prijsArray as $key => $prijs) { // De prijs wordt weergegeven
+                                      if ($id == $key) { // Er moet worden nagegaan of het id van het product gelijk is aan het id van de zoekopdracht zodat de juiste prijs wordt weergegeven.
+                                          ?>
+                                          <p class="btn btn-danger btn-block"> <?php print("€" . $prijs); ?></p>
+                                          <?php
+                                      }
+                                  }
+                                  ?>
+                              </div>
+                              <div class="col">
+                                  <a class="btn btn-success btn-block" href="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>&aantal=">Toevoegen</a>
+                                  <!-- Hier wordt de waarde id aan de knop om naar de winkelwagen toe te gaan meegegeven om het juiste product in de winkelwagen
+                                   te zetten. -->
+                              </div>
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -320,35 +328,34 @@ function randomGen($min, $max, $quantity) {
 
 
 function login($username, $password){
-                $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
-                $user = "root";
-                $pass = "";
-                $pdo = new PDO($db, $user, $pass);
-            $query = $pdo->prepare("SELECT * FROM Klantenaccount where Gebruikersnaam != '' AND Gebruikersnaam = '$username'");    
+            include '../Functies/dbConfig.php';
+            $query = $pdo->prepare("SELECT * FROM Klantenaccount where Gebruikersnaam = ?");
+            $query->execute(array($username));
+            $enc_psw = hash('sha256', $password);
             $query->execute();
             $array = array();
     while ($row = $query->fetch()) {
         $gebruikersnaam = $row["Gebruikersnaam"];
-        $pass2 = $row["Wachtwoord"];
+        $pass = $row["Wachtwoord"];
         $id = $row["KlantenID"];
-        if ($username == $gebruikersnaam AND $pass2 == $enc_psw){
-                       trigger_error("Je bent ingelogd!", E_USER_NOTICE);
+
+        if ($username == $gebruikersnaam AND $pass == $enc_psw){
+          echo "#?" . $id;
         }
         else {
+          echo "#?Not" ;
         }
     }
     return $array;
 }
+
 function register($username, $password, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr){
-                $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
-                $user = "root";
-                $pass = "";
-                $pdo = new PDO($db, $user, $pass);
+            include '../Functies/dbConfig.php';
             $enc_psw = hash('sha256', $password);
-            $query = $pdo->prepare("INSERT INTO Klantenaccount(Email, Gebruikersnaam, Wachtwoord) VALUES ('$email','$username','$enc_psw')");
-            $query->execute();
-            $query2 = $pdo->prepare("INSERT INTO Klanten(Voornaam, Tussenvoegsel, Achternaam, Telefoonnr ) VALUES ('$voornaam','$tussenvoegsel','$achternaam', '$telefoonnr')");
-            $query2->execute();
-            $query3 = $pdo->prepare("INSERT INTO Klantenadres(Adres, Postcode, Plaats, Huisnummer, Toevoeging) VALUES ('$adres','$plaats','$postcode', '$huisnummer', '$toevoeging')");
-            $query3->execute();
+            $query = $pdo->prepare("INSERT INTO Klantenaccount(Email, Gebruikersnaam, Wachtwoord) VALUES (?,?,?)");
+            $query->execute(array($email,$username,$enc_psw));
+            $query2 = $pdo->prepare("INSERT INTO Klanten(Voornaam, Tussenvoegsel, Achternaam, Telefoonnr ) VALUES (?,?,?,?)");
+            $query2->execute(array($voornaam,$tussenvoegsel,$achternaam, $telefoonnr));
+            $query3 = $pdo->prepare("INSERT INTO Klantenadres(Adres, Postcode, Plaats, Huisnummer, Toevoeging) VALUES (?,?,?,?,?)");
+            $query3->execute(array($adres,$plaats,$postcode, $huisnummer, $toevoeging));
     }

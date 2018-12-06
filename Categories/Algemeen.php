@@ -1,19 +1,12 @@
 <?php
-include '../Functies/dbConfig.php';
 include '../Functies/Functie.php';
+include '../Functies/Layouts.php';
+
 session_start();
 ?>
 <!doctype html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" href="../css/bootstrap.css">
-    <link rel="stylesheet" href="../css/Model.css">
-    <link rel="stylesheet" href="../css/Sidenav.css">
-    <script src="../js/jqeury-3.3.1.slim.min.js"></script>
-    <script src="../js/jqeury.min.js"></script>
-    <script src="../js/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <?php includeFiles(); ?>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -90,178 +83,35 @@ session_start();
         <a href="pantovels.php">Pantovels</a>
         <a href="Speelgoed.php">Speelgoed</a>
         <a href="VerpakingMateriaal.php">Verpaking Materiaal</a>
-       
     </div>
-    <div class="sticky-top sidenavposition">
+    <div class="sidenavposition">
         <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Categorieën</span>
     </div>
     <br><br><br>
 
-    <div class="container-fluid">
-        <!-- Het laten zien van de producten -->
-        <div class="row">
-            <?php
-            categorie(1);
-             ?>
-        </div>
-        <br>
-    </div>
-
-    <!-- The Modal login -->
-    <div id="login" class="modal">
-        <span onclick="document.getElementById('login').style.display = 'none'" class="close-model" title="Close Modal login">&times;</span>
-
-        <!-- Modal login Content -->
-        <form class="modal-border modal-content animate" action="/action_page.php">
-            <div class="imgcontainer">
-                <img src="../IMG/avatar.png" alt="Avatar" class="avatar">
-            </div>
-
-            <div class="container-login">
-                <label for="uname"><b>Gebruikersnaam</b></label>
-                <input class="login" type="text" placeholder="Gebruikersnaam" name="uname" required>
-
-                <label for="psw"><b>Wachtwoord</b></label>
-                <input class="login" type="password" placeholder="Wachtwoord" name="psw" required>
-
-                <button class="btn btn-success loginbtn" type="submit">Inloggen</button>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"> Onthouden
-                </label>
-            </div>
-
-            <div class="container-login" style="background-color:#f1f1f1">
-                <button type="button" class="btn btn-danger" onclick="document.getElementById('login').style.display = 'none'">Annuleren</button>
-                <span class="psw"><a href="#">Wachtwoord vergeten?</a></span>
-            </div>
-        </form>
-    </div>
-    <!-- The Modal signup -->
-    <div id="signup" class="modal">
-        <span onclick="document.getElementById('signup').style.display = 'none'" class="close-model" title="Close Modal signup">&times;</span>
-
-        <form class="modal-content model-border animate" action="/action_page.php">
-            <div class="container-login">
-                <h1>Registeren</h1>
-                <p>Please fill in this form to create an account.</p>
-                <hr>
-                <label for="gebruikersnaam"><b>Gebruikersnaam</b></label>
-                <input class="signup" type="text" placeholder="Gebruikersnaam" name="gebruikersnaam" required>
-
-                <label for="email"><b>Email</b></label>
-                <input class="signup" type="text" placeholder="Email" name="email" required>
-
-                <label for="wachtwoord"><b>Wachtwoord</b></label>
-                <input class="signup" type="password" placeholder="Wacthwoord" name="wachtwoord" required>
-
-                <label for="wachtwoord-repeat"><b>Herhaal Wachtwoord</b></label>
-                <input class="signup" type="password" placeholder="Herhaal Wachtwoord" name="wachtwoord-repeat" required>
-
-                <label>
-                    <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Onthouden
-                </label>
-
-                <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
-
-                <div class="btn-group">
-                    <button class="btn btn-danger" type="button" onclick="document.getElementById('signup').style.display = 'none'">Annuleren</button>
-                    <button class="btn btn-success" type="submit">Registreren</button>
-                </div>
-            </div>
-        </form>
-    </div>
 
 
-    <!-- Footer -->
-    <footer class="text-light bg-dark">
-        <div id="wrap" class="container">
-            <div id="main" class="row clear-top">
-                <div class="col-md-3 col-lg-4 col-xl-3">
-                    <h5>About</h5>
-                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                    <p class="mb-0">
-                        Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.
-                    </p>
-                </div>
+    <?php
+    /* Dit is de functie die alle producten laat zien met stockgroup id 1 */
+    /* De volgende functies zijn te vinden in de map Functies/layout.php */
+    categorieën(1);
 
-                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto">
-                    <h5>Informations</h5>
-                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                    <ul class="list-unstyled">
-                        <li><a href="">Link 1</a></li>
-                        <li><a href="">Link 2</a></li>
-                        <li><a href="">Link 3</a></li>
-                        <li><a href="">Link 4</a></li>
-                    </ul>
-                </div>
+    /* Modal login Content */
+    ModalLogin();
 
-                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto">
-                    <h5>Others links</h5>
-                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                    <ul class="list-unstyled">
-                        <li><a href="">Link 1</a></li>
-                        <li><a href="">Link 2</a></li>
-                        <li><a href="">Link 3</a></li>
-                        <li><a href="">Link 4</a></li>
-                    </ul>
-                </div>
+    /* Modal signup Content */
+    ModalSignup();
 
-                <div class="col-md-4 col-lg-3 col-xl-3">
-                    <h5>Contact</h5>
-                    <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
-                    <ul class="list-unstyled">
-                        <li><i class="fa fa-home mr-2"></i> My company</li>
-                        <li><i class="fa fa-envelope mr-2"></i> email@example.com</li>
-                        <li><i class="fa fa-phone mr-2"></i> + 33 12 14 15 16</li>
-                        <li><i class="fa fa-print mr-2"></i> + 33 12 14 15 16</li>
-                    </ul>
-                </div>
-                <div class="col-12 copyright mt-3">
-                    <p class="float-left">
-                        <a href="#">Back to top</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
-        <?php
-    $uname = filter_input(INPUT_GET, "gebruikersnaam", FILTER_SANITIZE_STRING);
-    $psw = filter_input(INPUT_GET, "wachtwoord", FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_STRING);
-    $adres = filter_input(INPUT_GET, "adres", FILTER_SANITIZE_STRING);
-    $plaats = filter_input(INPUT_GET, "plaats", FILTER_SANITIZE_STRING);
-    $postcode = filter_input(INPUT_GET, "postcode", FILTER_SANITIZE_STRING);
-    $huisnummer = filter_input(INPUT_GET, "huisnummer", FILTER_SANITIZE_STRING);
-    $toevoeging = filter_input(INPUT_GET, "toevoeging", FILTER_SANITIZE_STRING);
-    $voornaam=  filter_input(INPUT_GET, "voornaam", FILTER_SANITIZE_STRING);
-    $tussenvoegsel = filter_input(INPUT_GET, "tussenvoegsel", FILTER_SANITIZE_STRING);
-    $achternaam = filter_input(INPUT_GET, "achternaam", FILTER_SANITIZE_STRING);
-    $telefoonnr = filter_input(INPUT_GET, "telefoonnr", FILTER_SANITIZE_STRING);
-    
-    register($uname, $psw, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr);
-    
-    $username = filter_input(INPUT_GET, "uname", FILTER_SANITIZE_STRING);
-    $password = filter_input(INPUT_GET, "psw", FILTER_SANITIZE_STRING);
-    login ($username, $password); 
-    
+    /* Laat de footer zien */
+    Footer();
+    ?>
 
-            ?>
-    
     <script>
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "300px";
-        }
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-        }
-        // Get the modal
-        var modal = document.getElementById('login');
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
+<?php
+/* De volgende functies zijn te vinden in de map Functies/Functies.php */
+navigationBar();
+onclickScript();
+?>
     </script>
 </body>
 

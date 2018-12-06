@@ -1,14 +1,5 @@
 <?php
-
-//DB details
-$dbHost = 'localhost';
-$dbUsername = 'root';
-$dbPassword = '';
-$dbName = 'wideworldimporters';
-
-//Create connection and select DB
-$db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
-
-if ($db->connect_error) {
-    die("Unable to connect database: " . $db->connect_error);
-}
+$db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
+$user = "root";
+$pass = "";
+$pdo = new PDO($db, $user, $pass);
