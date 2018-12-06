@@ -324,8 +324,7 @@ function login($username, $password){
                 $user = "root";
                 $pass = "";
                 $pdo = new PDO($db, $user, $pass);
-            $query = $pdo->prepare("SELECT * FROM Klantenaccount where Gebruikersnaam != ''");
-            $enc_psw = hash('sha256', $password);
+            $query = $pdo->prepare("SELECT * FROM Klantenaccount where Gebruikersnaam != '' AND Gebruikersnaam = '$username'");    
             $query->execute();
             $array = array();
     while ($row = $query->fetch()) {
