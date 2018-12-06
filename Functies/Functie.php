@@ -324,25 +324,22 @@ function login($username, $password){
                 $user = "root";
                 $pass = "";
                 $pdo = new PDO($db, $user, $pass);
-            $query = $pdo->prepare("SELECT * FROM Klantenaccount where Gebruikersnaam = '$username'");
+            $query = $pdo->prepare("SELECT * FROM Klantenaccount where Gebruikersnaam != ''");
             $enc_psw = hash('sha256', $password);
             $query->execute();
             $array = array();
     while ($row = $query->fetch()) {
         $gebruikersnaam = $row["Gebruikersnaam"];
-        $pass = $row["Wachtwoord"];
+        $pass2 = $row["Wachtwoord"];
         $id = $row["KlantenID"];
-
-        if ($username == $gebruikersnaam AND $pass == $enc_psw){
-          echo "#?" . $id;
+        if ($username == $gebruikersnaam AND $pass2 == $enc_psw){
+                      print ("Je bent ingelogd!");
         }
         else {
-          echo "#?Not" ;
         }
     }
     return $array;
 }
-
 function register($username, $password, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr){
                 $db = "mysql:host=localhost;dbname=wideworldimporters;port=3306";
                 $user = "root";
