@@ -5,10 +5,10 @@ $cart = new Cart;
 
 // include database configuration file
 include '../Functies/dbConfig.php';
-if (isset($_REQUEST['action']) && !empty($_REQUEST['action'])) {
-    if ($_REQUEST['action'] == 'addToCart' && !empty($_REQUEST['id']) && !empty($_REQUEST['aantal'])) {
-        $productID = $_REQUEST['id'];
-        $aantal = $_REQUEST['aantal'];
+if (isset($_GET['action']) && !empty($_GET['action'])) {
+    if ($_GET['action'] == 'addToCart' && !empty($_GET['id']) && !empty($_GET['aantal'])) {
+        $productID = $_GET['id'];
+        $aantal = $_GET['aantal'];
         // get product details
         $query = $db->query("SELECT * FROM stockitems WHERE StockItemID = " . $productID);
         $row = $query->fetch_assoc();
@@ -22,17 +22,17 @@ if (isset($_REQUEST['action']) && !empty($_REQUEST['action'])) {
         $insertItem = $cart->insert($itemData);
         $redirectLoc = $insertItem ?  'Winkelwagen.php' : '../Categories/Categories.php';
         header("Location: " . $redirectLoc);
-    } elseif($_REQUEST['action'] == 'updateCartItem' && !empty($_REQUEST['id'])){
+    } elseif($_GET['action'] == 'updateCartItem' && !empty($_GET['id'])){
         $itemData = array(
-            'rowid' => $_REQUEST['id'],
-            'qty' => $_REQUEST['qty']
+            'rowid' => $_GET['id'],
+            'qty' => $_GET['qty']
         );
         $updateItem = $cart->update($itemData);
         echo $updateItem?'ok':'err';die;
-    } elseif ($_REQUEST['action'] == 'removeCartItem' && !empty($_REQUEST['id'])) {
-        $deleteItem = $cart->remove($_REQUEST['id']);
+    } elseif ($_GET['action'] == 'removeCartItem' && !empty($_GET['id'])) {
+        $deleteItem = $cart->remove($_GET['id']);
         header("Location: Winkelwagen.php");
-    } elseif ($_REQUEST['action'] == 'placeOrder' && $cart->total_items() > 0 && !empty($_SESSION['sessCustomerID'])) {
+    } elseif ($_GET['action'] == 'placeOrder' && $cart->total_items() > 0 && !empty($_SESSION['sessCustomerID'])) {
         // insert order details into database
         $insertOrder = $db->query("INSERT INTO orders (CustomerID, OrderDate,) VALUES ('" . $_SESSION['sessCustomerID'] . "', '" . $cart->total() . "', '" . date("Y-m-d H:i:s") . "', '" . date("Y-m-d H:i:s") . "')");
 
@@ -57,8 +57,8 @@ if (isset($_REQUEST['action']) && !empty($_REQUEST['action'])) {
             header("Location: ../Betalen/Betalen.php");
         }
     } else {
-        header("Location: ../Categories/Categories.php");
+   //     header("Location: ../Categories/Categories.php");
     }
 } else {
-    header("Location: ../Categories/Categories.php");
+ //   header("Location: ../Categories/Categories.php");
 }
