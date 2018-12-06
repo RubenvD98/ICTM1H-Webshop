@@ -6,16 +6,18 @@ $id = $_GET['id'];
 ?>
 <!doctype html>
 <head>
-  <?php includeFiles(); ?>
-  <style>
-    input[type="number"]{width: 40%;}
-    footer {
-        position:absolute;
-        bottom:0;
-        width:100%;
-        height: 170px;   /* Height of the footer */
-    }
-  </style>
+    <?php includeFiles(); 
+    list($filterNaamArray, $naamMaatArray, $naamKleurArray) = filterenNaam();
+    ?>
+    <style>
+        input[type="number"]{width: 40%;}
+        footer {
+            position:absolute;
+            bottom:0;
+            width:100%;
+            height: 170px;   /* Height of the footer */
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -78,117 +80,164 @@ $id = $_GET['id'];
             </div>
         </div>
     </div>
-<form action="../Winkelwagen/CartAction.php?action=addToCart&id=<?php echo $id; ?>&aantal=<?php filter_input(INPUT_POST, 'aantal', FILTER_SANITIZE_STRING); ?>" method="post">
-    <div class="card">
-        <div class="row">
-            <aside class="col-sm-5 border-right">
-                <article class="gallery-wrap">
-                    <div class="img-big-wrap">
-                        <div> <a href="#"><img src="../IMG/chocolade.jpg"></a></div>
-                    </div> <!-- slider-product.// -->
-                    <div class="img-small-wrap">
-                        <!--<div class="item-gallery"> <img src="https://s9.postimg.org/tupxkvfj3/image.jpg"> </div> -->
-                    </div> <!-- slider-nav.// -->
-                </article> <!-- gallery-wrap .end// -->
-            </aside>
-            <aside class="col-sm-7">
-                <article class="card-body p-5">
-                    <h3 class="title mb-3">
-                        <?php
-                        list($artikelNaamArray, $naamMaatArray) = filterenNaam();
-                        $artikelNaam = "";
-                        foreach ($artikelNaamArray as $key => $artikel) {
-                            if ($key == $id) {
-                                print($artikel);
-                                $artikelNaam = $artikel;
+    <form action="../Winkelwagen/CartAction.php" method="get">
+        <input type="text" name="action" value="addToCart" hidden>
+        <div class="card">
+            <div class="row">
+                <aside class="col-sm-5 border-right">
+                    <article class="gallery-wrap">
+                        <div class="img-big-wrap">
+                            <div> <a href="#"><img src="../IMG/chocolade.jpg"></a></div>
+                        </div> <!-- slider-product.// -->
+                        <div class="img-small-wrap">
+                            <!--<div class="item-gallery"> <img src="https://s9.postimg.org/tupxkvfj3/image.jpg"> </div> -->
+                        </div> <!-- slider-nav.// -->
+                    </article> <!-- gallery-wrap .end// -->
+                </aside>
+                <aside class="col-sm-7">
+                    <article class="card-body p-5">
+                        <h3 class="title mb-3">
+                            <?php
+                            
+                            $artikelNaam = "";
+                            foreach ($filterNaamArray as $key => $artikel) {
+                                if ($key == $id) {
+                                    print($artikel);
+                                    $artikelNaam = $artikel;
+                                }
                             }
-                        }
-                        ?>
-                    </h3>
+                            ?>
+                        </h3>
 
-                    <p class="price-detail-wrap">
-                        <span class="price h3 text-warning">
-                            <span class="currency">€</span><span class="num">
-                                <?php
-                                //Prijzen bij het gewenste product
-                                list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
-                                foreach ($prijsArray as $key => $prijs) {
-                                    if ($id == $key) {
-                                        print($prijs);
+                        <p class="price-detail-wrap">
+                            <span class="price h3 text-warning">
+                                <span class="currency">€</span><span class="num">
+                                    <?php
+                                    //Prijzen bij het gewenste product
+                                    list($beschrijvingArray, $artikelArray, $prijsArray) = WaardesOphalen();
+                                    foreach ($prijsArray as $key => $prijs) {
+                                        if ($id == $key) {
+                                            print($prijs);
+                                        }
                                     }
-                                }
-                                ?>
+                                    ?>
+                                </span>
                             </span>
-                        </span>
-                    </p> <!-- price-detail-wrap .// -->
-                    <dl class="item-property">
-                        <dt>Beschrijving</dt>
-                        <dd><p>
-                                <?php
-                                foreach ($beschrijvingArray as $key => $beschrijving) {
-                                    if ($key == $id) {
-                                        print($beschrijving);
+                        </p> <!-- price-detail-wrap .// -->
+                        <dl class="item-property">
+                            <dt>Beschrijving</dt>
+                            <dd><p>
+                                    <?php
+                                    $fBeschrijvingArray = beschrijving();
+                                    foreach ($fBeschrijvingArray as $key => $beschrijving) {
+                                        if ($key == $id) {
+                                            print($beschrijving);
+                                        }
+                                    }
+                                    ?>
+                                </p></dd>
+                        </dl>
+                        <dl class="param param-feature">
+                            <dt>Bezorging</dt>
+                            <dd>Nederland</dd>
+                        </dl>  <!-- item-property-hor .// -->
+                        <!-- item-property-hor .// -->
+                        <dl class="param param-feature">
+                            <dt>Kleur</dt>
+                            <?php
+                            /* De array naamKleur moet worden doorgelopen */
+                            foreach ($naamKleurArray as $productNaam => $kleurArray) {
+                                /* Het artikel van de pagina moet worden vergeleken met het artikel dat in de array staat */
+
+                                if ($productNaam === $artikelNaam) {
+                                    /* Nu moet de kleurArray worden doorgelopen */
+                                    ?> <select> <?php
+                                        foreach ($kleurArray as $key => $kleur) {
+                                            $kleur = trim(str_replace(")", "", $kleur));
+                                            $kleur = trim(str_replace("(", "", $kleur));
+                                            if (empty($kleur) === FALSE) {
+                                                ?>
+                                                <!-- Er wordt een select aangemaakt met daarin de beschikbare kleuren voor het product-->
+
+                                                <option value="<?php print($kleur); ?>"><?php print($kleur); ?></option>
+
+                                                <?php
+                                            }
+                                        }
                                     }
                                 }
                                 ?>
-                            </p></dd>
-                    </dl>
-                    <dl class="param param-feature">
-                        <dt>Bezorging</dt>
-                        <dd>Nederland</dd>
-                    </dl>  <!-- item-property-hor .// -->
-                    <!-- item-property-hor .// -->
-                    <dl class="param param-feature">
-                        <dt>Kleur</dt>
-                        <dd>Black and white</dd>
-                    </dl>  <!-- item-property-hor .// -->
+                            </select>
+                        </dl>  <!-- item-property-hor .// -->
 
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <dl class="param param-inline">
-                                <dt>Hoeveelheid: </dt>
-                                <dd>
-                                    <input type="number" min="1" max="100" class="form-control text-center" value="1" name="aantal">
-                                </dd>
-                            </dl>  <!-- item-property .// -->
-                        </div> <!-- col.// -->
-                        <div class="col-sm-7">
-                            <dl class="param param-inline">
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <dl class="param param-inline">
+                                    <dt>Hoeveelheid: </dt>
+                                    <dd>
+                                        <input type="number" min="1" class="form-control text-center" value="1" name="aantal">
+                                    </dd>
+                                </dl>  <!-- item-property .// -->
+                            </div> <!-- col.// -->
+                            <div class="col-sm-7">
+                                <dl class="param param-inline">
+                                    <?php
+                                $aantalMaten = 0;
+                                    foreach ($naamMaatArray as $productNaam => $maatArray) {
+                                        /* Het artikel van de pagina moet worden vergeleken met het artikel dat in de array staat */
+                                      
+                                            if ($productNaam === $artikelNaam) {
+                                            /* Nu moet de maatArray worden doorgelopen */
+                                            foreach ($maatArray as $key => $maat) {
+                                                $aantalMaten = $aantalMaten + 1 ;
+                                            }
+                                            }
+                                        }
+                                if($aantalMaten - 1 !== 0){
+                                ?>
                                 <dt>Maat: </dt>
                                 <dd>
                                     <?php
                                     /* De array naamMaat moet worden doorgelopen */
                                     foreach ($naamMaatArray as $productNaam => $maatArray) {
                                         /* Het artikel van de pagina moet worden vergeleken met het artikel dat in de array staat */
-                                        if ($productNaam === $artikelNaam) {
+                                      
+                                            if ($productNaam === $artikelNaam) {
                                             /* Nu moet de maatArray worden doorgelopen */
                                             foreach ($maatArray as $key => $maat) {
+                                                if(empty($maat) === FALSE){
                                                 ?>
                                                 <!-- Er worden radiobuttons aangemaakt met daarin de maat-->
                                                 <label class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                    <input class="form-check-input" type="radio" name="id" id="inlineRadio" value="<?php print($key)?>">
                                                     <span class="form-check-label"><?php print($maat); ?></span>
                                                 </label>
                                                 <?php
                                             }
+                                            }
                                         }
+                                        
                                     }
+                                } else {
                                     ?>
-
+                                                <input type="text" name="id" value="<?php print($id); ?>" hidden>            
+                                    <?php
+                                }
+                                    ?>                                
                                 </dd>
-                            </dl>  <!-- item-property .// -->
-                        </div> <!-- col.// -->
+                                </dl>  <!-- item-property .// -->
+                            </div> <!-- col.// -->
 
-                    </div> <!-- row.// -->
-                    <hr>
-                    <input type="submit" name="Toevoegen" value="Toevoegen" class="btn btn-lg btn-outline-success text-uppercase">
-                </article> <!-- card-body.// -->
-            </aside> <!-- col.// -->
-        </div> <!-- row.// -->
-    </div> <!-- card.// -->
-</form>
-    <?php
+                        </div> <!-- row.// -->
+                        <hr>
+                        <input type="submit" name="Toevoegen" value="Toevoegen" class="btn btn-lg btn-outline-success text-uppercase">
+                    </article> <!-- card-body.// -->
+                </aside> <!-- col.// -->
+            </div> <!-- row.// -->
+        </div> <!-- card.// -->
+    </form>
+<?php
     /* Modal login Content */
     ModalLogin();
 
@@ -198,8 +247,8 @@ $id = $_GET['id'];
     /* Laat de footer zien */
     Footer();
     ?>
-  
-          <?php
+
+    <?php
     $uname = filter_input(INPUT_GET, "gebruikersnaam", FILTER_SANITIZE_STRING);
     $psw = filter_input(INPUT_GET, "wachtwoord", FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_STRING);
@@ -208,23 +257,21 @@ $id = $_GET['id'];
     $postcode = filter_input(INPUT_GET, "postcode", FILTER_SANITIZE_STRING);
     $huisnummer = filter_input(INPUT_GET, "huisnummer", FILTER_SANITIZE_STRING);
     $toevoeging = filter_input(INPUT_GET, "toevoeging", FILTER_SANITIZE_STRING);
-    $voornaam=  filter_input(INPUT_GET, "voornaam", FILTER_SANITIZE_STRING);
+    $voornaam = filter_input(INPUT_GET, "voornaam", FILTER_SANITIZE_STRING);
     $tussenvoegsel = filter_input(INPUT_GET, "tussenvoegsel", FILTER_SANITIZE_STRING);
     $achternaam = filter_input(INPUT_GET, "achternaam", FILTER_SANITIZE_STRING);
     $telefoonnr = filter_input(INPUT_GET, "telefoonnr", FILTER_SANITIZE_STRING);
-    
+
     register($uname, $psw, $email, $adres, $plaats, $postcode, $huisnummer, $toevoeging, $voornaam, $tussenvoegsel, $achternaam, $telefoonnr);
-    
+
     $username = filter_input(INPUT_GET, "uname", FILTER_SANITIZE_STRING);
     $password = filter_input(INPUT_GET, "psw", FILTER_SANITIZE_STRING);
-    login ($username, $password); 
-    
+    login($username, $password);
+    ?>
 
-            ?>
-    
 
     <script>
-    onclickScript();
+        onclickScript();
     </script>
 </body>
 </html>
